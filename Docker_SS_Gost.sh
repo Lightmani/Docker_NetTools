@@ -66,5 +66,5 @@ EOF
 docker run -d --net host --restart always --name gost -v /etc/gost:/etc/gost ginuerzh/gost -C /etc/gost/config.json
 
 
-
+clear
 echo $pass
