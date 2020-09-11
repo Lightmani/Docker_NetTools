@@ -8,4 +8,4 @@ SS密码使用随机生成的UUID
 
 一键脚本（目前仅支持Ubuntu18+/Debian9+）：
 
-apt install wget -y && wget --no-check-certificate -O /opt/ss.sh https://git.io/JUWsl && chmod 755 && bash /opt/ss.sh
+apt install wget -y && wget --no-check-certificate -O /opt/ss.sh https://git.io/JUWsl && chmod 755 /opt/ss.sh && bash /opt/ss.sh
