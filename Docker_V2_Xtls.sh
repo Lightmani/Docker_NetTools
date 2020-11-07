@@ -33,10 +33,13 @@ firewall(){
 apt install ufw -y
 ufw default allow
 ufw default deny
-ufw allow 22
+ufw allow 8443
 ufw allow 443
 ufw allow 80
-ufw enable
+ufw allow 22
+ufw allow 55555
+systemctl enable ufw
+systemctl start ufw
 }
 
 
