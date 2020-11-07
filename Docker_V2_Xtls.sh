@@ -55,6 +55,12 @@ service sshd restart
 #LNMP一键
 v2_nginx(){
 
+mkdir /etc/v2ray
+curl  https://get.acme.sh | sh
+~/.acme.sh/acme.sh --issue -d $yoursite --standalone -k ec-256
+~/.acme.sh/acme.sh --installcert -d $yoursite --fullchainpath /etc/v2ray/v2ray.crt --keypath /etc/v2ray/v2ray.key --ecc
+
+
 apt install -y curl vim wget unzip apt-transport-https lsb-release ca-certificates git gnupg2 netcat socat 
 
 
@@ -80,10 +86,7 @@ server {
 }
 EOF
 
-mkdir /etc/v2ray
-curl  https://get.acme.sh | sh
-~/.acme.sh/acme.sh --issue -d $yoursite --standalone -k ec-256
-~/.acme.sh/acme.sh --installcert -d $yoursite --fullchainpath /etc/v2ray/v2ray.crt --keypath /etc/v2ray/v2ray.key --ecc
+
 
 
 
