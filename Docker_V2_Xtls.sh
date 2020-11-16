@@ -36,7 +36,7 @@ ufw default deny
 ufw allow 8443
 ufw allow 443
 ufw allow 80
-ufw allow 22
+ufw allow 22222
 ufw allow 55555
 systemctl enable ufw
 systemctl start ufw
@@ -44,7 +44,10 @@ systemctl start ufw
 
 
 ssha(){
-
+cd /root
+mkdir .ssh/
+read -p " 请输入你的KEY:" key
+echo $key >> /root/.ssh/authorized_keys
 echo "PasswordAuthentication no">>/etc/ssh/sshd_config
 echo "PubkeyAuthentication yes">>/etc/ssh/sshd_config
 echo "Port 22222">>/etc/ssh/sshd_config
@@ -106,7 +109,7 @@ mkdir /etc/v2ray
 cd /etc/v2ray
 rm config.json
 *****************************************
-wget https://raw.githubusercontent.com/Lightmani/config/master/config.json  -cO config.json
+wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/V2_XTLS.config  -cO config.json
 modify_port_UUID
 docker pull v2fly/v2fly-core
 docker run -d --name v2ray --restart always --net host -v /etc/v2ray:/etc/v2ray v2fly/v2fly-core
