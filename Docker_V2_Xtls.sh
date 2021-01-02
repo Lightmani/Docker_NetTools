@@ -6,7 +6,7 @@ read -p " 请输入你的网址:" yoursite
 
 apt update 
 apt upgrade -y
-apt install vim ufw curl wget unzip rng-tools -y
+apt install vim ufw curl wget unzip rng-tools cron -y
 
 
 #bbr
