@@ -60,10 +60,10 @@ v2_nginx(){
 
 apt install -y curl vim wget unzip apt-transport-https lsb-release ca-certificates git gnupg2 netcat socat 
 
-mkdir /etc/v2ray
+mkdir /etc/xray
 curl  https://get.acme.sh | sh
 ~/.acme.sh/acme.sh --issue -d $yoursite --standalone -k ec-256
-~/.acme.sh/acme.sh --installcert -d $yoursite --fullchainpath /etc/v2ray/v2ray.crt --keypath /etc/v2ray/v2ray.key --ecc
+~/.acme.sh/acme.sh --installcert -d $yoursite --fullchainpath /etc/xray/v2ray.crt --keypath /etc/xray/v2ray.key --ecc
 
 
 
@@ -80,9 +80,6 @@ server {
         index index.php index.html;
         server_name $yoursite; 
 
-        location / {
-            try_files $uri /index.php$is_args$args;
-        }
 
         location ~ \.php$ {
             include snippets/fastcgi-php.conf;
@@ -105,14 +102,14 @@ wget -qO- get.docker.com | bash
 systemctl enable docker
 systemctl start docker
 
-mkdir /etc/v2ray
-cd /etc/v2ray
+mkdir /etc/xray
+cd /etc/xray
 rm config.json
 *****************************************
 wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/V2_XTLS.config  -cO config.json
 modify_port_UUID
 docker pull teddysun/xray
-docker run -d --name v2ray --restart always --net host -v /etc/v2ray:/etc/v2ray teddysun/xray
+docker run -d --name v2ray --restart always --net host -v /etc/xray:/etc/xray teddysun/xray
 
 
 
