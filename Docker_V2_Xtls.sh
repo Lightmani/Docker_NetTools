@@ -111,8 +111,8 @@ rm config.json
 *****************************************
 wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/V2_XTLS.config  -cO config.json
 modify_port_UUID
-docker pull v2fly/v2fly-core
-docker run -d --name v2ray --restart always --net host -v /etc/v2ray:/etc/v2ray v2fly/v2fly-core
+docker pull teddysun/xray
+docker run -d --name v2ray --restart always --net host -v /etc/v2ray:/etc/v2ray teddysun/xray
 
 
 
