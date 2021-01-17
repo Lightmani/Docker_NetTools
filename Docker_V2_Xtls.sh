@@ -23,7 +23,7 @@ modify_port_UUID(){
 
     UUID=$(cat /proc/sys/kernel/random/uuid)
 
-    sed -i "/\"id\"/c \\\t  \"id\":\"${UUID}\"," /etc/v2ray/config.json
+    sed -i "/\"id\"/c \\\t  \"id\":\"${UUID}\"," /etc/xray/config.json
 
 
 }
