@@ -15,3 +15,7 @@ SS默认使用AEAD加密，密码使用随机生成的UUID
 运行：
 
 apt install wget -y && wget --no-check-certificate -O /opt/ss.sh https://git.io/JUWsl && chmod 755 /opt/ss.sh && bash /opt/ss.sh
+
+2、Xray
+
+apt install wget -y && wget --no-check-certificate -O /opt/ss.sh https://raw.githubusercontent.com/Lightmani/Docker_NetTools/master/Docker_V2_Xtls.sh && chmod 755 /opt/ss.sh && bash /opt/ss.sh
