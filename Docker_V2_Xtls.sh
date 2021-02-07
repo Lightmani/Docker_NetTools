@@ -110,7 +110,7 @@ modify_port_UUID
 docker pull teddysun/xray
 docker run -d --name v2ray --restart always --net host -v /etc/xray:/etc/xray teddysun/xray
 
-
+service nginx restart
 
 
 
