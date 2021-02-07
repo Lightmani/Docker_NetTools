@@ -59,6 +59,7 @@ service sshd restart
 v2_nginx(){
 
 apt install -y curl vim wget unzip apt-transport-https lsb-release ca-certificates git gnupg2 netcat socat 
+yum install -y curl vim wget unzip apt-transport-https lsb-release ca-certificates git gnupg2 netcat socat 
 
 mkdir /etc/xray
 curl  https://get.acme.sh | sh
@@ -70,6 +71,7 @@ curl  https://get.acme.sh | sh
 
 
 apt install -y nginx
+yum install -y nginx
 systemctl enable nginx
 
 cat >> /etc/nginx/sites-enabled/site.conf << EOF
@@ -81,10 +83,7 @@ server {
         server_name $yoursite; 
 
 
-        location ~ \.php$ {
-            include snippets/fastcgi-php.conf;
-            fastcgi_pass unix:/run/php/php7.4-fpm.sock;
-        }
+      
 }
 EOF
 
