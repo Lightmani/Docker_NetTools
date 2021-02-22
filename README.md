@@ -16,6 +16,10 @@ SS默认使用AEAD加密，密码使用随机生成的UUID
 
 apt install wget -y && wget --no-check-certificate -O /opt/ss.sh https://git.io/JUWsl && chmod 755 /opt/ss.sh && bash /opt/ss.sh
 
-2、Xray
+2、Xray For Debian/Ubuntu
 
-apt install wget -y && wget --no-check-certificate -O /opt/ss.sh https://raw.githubusercontent.com/Lightmani/Docker_NetTools/master/Docker_V2_Xtls.sh && chmod 755 /opt/ss.sh && bash /opt/ss.sh
+apt install wget -y && wget --no-check-certificate -O /opt/v2.sh https://raw.githubusercontent.com/Lightmani/Docker_NetTools/master/Docker_V2_Xtls.sh && chmod 755 /opt/v2.sh && bash /opt/v2.sh
+
+3. Xray For Centos
+
+yum install wget -y && wget --no-check-certificate -O /opt/v2.sh https://github.com/Lightmani/Docker_NetTools/raw/master/V2_XTLS_Centos7.sh && chmod 755 /opt/v2.sh && bash /opt/v2.sh
