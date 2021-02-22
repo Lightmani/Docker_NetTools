@@ -5,7 +5,7 @@ read -p " 请输入你的网址:" yoursite
 
 
 yum update -y
-yum install wget curl unzip tar policycoreutils-python  rng-tools vim firewalld cron -y
+yum install wget curl unzip tar policycoreutils-python  rng-tools vim firewalld cron epel-release -y
 
 
 
@@ -53,6 +53,9 @@ systemctl restart sshd.service
 #LNMP一键
 v2_nginx(){
 
+yum -y install vixie-cron
+yum -y install crontabs
+systemctl start crond.service
 
 yum install -y curl vim wget unzip apt-transport-https lsb-release ca-certificates git gnupg2 netcat socat epel-release
 
@@ -112,6 +115,11 @@ service nginx restart
 echo "*******************************************************************"
 
 echo -e "${Red} 用户id（UUID）：${Font} ${UUID}"
+echo -e "
+wget --no-check-certificate -O /opt/bbr.sh https://github.com/teddysun/across/raw/master/bbr.sh
+chmod 755 /opt/bbr.sh
+/opt/bbr.sh
+"
 }
 
 
