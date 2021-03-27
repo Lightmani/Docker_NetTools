@@ -40,7 +40,7 @@ cat>config.json<<EOF
 "server_port":55555,
 "password":"$pass",
 "timeout":300,
-"method":"aes-128-gcm",
+"method":"chacha20-ietf-poly1305",
 "fast_open":true,
 "nameserver":"1.0.0.1",
 "mode":"tcp_and_udp",
