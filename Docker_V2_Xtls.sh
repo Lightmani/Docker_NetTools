@@ -22,9 +22,12 @@ sysctl -p >/dev/null 2>&1
 modify_port_UUID(){
 
     UUID=$(cat /proc/sys/kernel/random/uuid)
+    pass=$(openssl rand -base64 8)
+
+
 
     sed -i "/\"id\"/c \\\t  \"id\":\"${UUID}\"," /etc/xray/config.json
-
+sed -i "/\"password\"/c \\\t  \"password\":\"${pass}\"," /etc/xray/config.json
 
 }
 
@@ -116,6 +119,7 @@ service nginx restart
 echo "*******************************************************************"
 
 echo -e "${Red} 用户id（UUID）：${Font} ${UUID}"
+echo -e "${Red} SS Password ：${Font} ${pass}"
 }
 
 
