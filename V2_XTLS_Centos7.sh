@@ -7,7 +7,11 @@ read -p " 请输入你的网址:" yoursite
 yum update -y
 yum install wget curl unzip tar policycoreutils-python  rng-tools vim firewalld cron epel-release -y
 
-
+rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
+rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-2.el7.elrepo.noarch.rpm
+yum --enablerepo=elrepo-kernel install kernel-ml
+grub2-mkconfig -o /boot/grub2/grub.cfg
+sed -i 's/^default=.*/default=0/g' /boot/grub/grub.conf
 
 #bbr
 
