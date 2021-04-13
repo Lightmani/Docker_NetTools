@@ -50,7 +50,7 @@ cd /root
 mkdir .ssh/
 read -p " 请输入你的KEY:" key
 echo $key >> /root/.ssh/authorized_keys
-sed -i 's/^PasswordAuthentication .*/PasswordAuthentication no/g' /etc/default/grub
+sed -i 's/^PasswordAuthentication .*/PasswordAuthentication no/g' /etc/ssh/sshd_config
 echo "PasswordAuthentication no">>/etc/ssh/sshd_config
 echo "PubkeyAuthentication yes">>/etc/ssh/sshd_config
 echo "Port 22222">>/etc/ssh/sshd_config
