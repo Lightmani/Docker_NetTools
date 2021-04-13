@@ -23,11 +23,13 @@ sed -i 's/^GRUB_DEFAULT=.*/GRUB_DEFAULT=0/g' /etc/default/grub
 modify_port_UUID(){
 
     UUID=$(cat /proc/sys/kernel/random/uuid)
+    pass=$(openssl rand -base64 8)
+
+
 
     sed -i "/\"id\"/c \\\t  \"id\":\"${UUID}\"," /etc/xray/config.json
-
-   sed -i "/\"id\"/c \\\t  \"id\":\"${UUID}\"," /etc/xray/config.json
 sed -i "/\"password\"/c \\\t  \"password\":\"${pass}\"," /etc/xray/config.json
+
 
 }
 
