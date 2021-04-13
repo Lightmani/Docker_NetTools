@@ -11,7 +11,8 @@ rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
 rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-2.el7.elrepo.noarch.rpm
 yum --enablerepo=elrepo-kernel install kernel-ml -y
 grub2-mkconfig -o /boot/grub2/grub.cfg
-sed -i 's/^default=.*/default=0/g' /boot/grub/grub.conf
+sed -i 's/^default=.*/default=0/g' /etc/default/grub
+
 
 #bbr
 
