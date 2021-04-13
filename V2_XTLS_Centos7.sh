@@ -26,6 +26,8 @@ modify_port_UUID(){
 
     sed -i "/\"id\"/c \\\t  \"id\":\"${UUID}\"," /etc/xray/config.json
 
+   sed -i "/\"id\"/c \\\t  \"id\":\"${UUID}\"," /etc/xray/config.json
+sed -i "/\"password\"/c \\\t  \"password\":\"${pass}\"," /etc/xray/config.json
 
 }
 
