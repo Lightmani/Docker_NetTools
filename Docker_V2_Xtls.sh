@@ -122,6 +122,15 @@ echo -e "${Red} 用户id（UUID）：${Font} ${UUID}"
 echo -e "${Red} SS Password ：${Font} ${pass}"
 }
 
+update(){
+docker pull teddysun/xray
+docker stop v2ray
+docker rm v2ray
+docker run -d --name v2ray --restart always --net host -v /etc/xray:/etc/xray teddysun/xray
+
+
+}
+
 
 echo -e "1.Environment"
 echo -e "2.V2Ray+Nginx"
@@ -146,7 +155,11 @@ case "$menu_Num" in
 	environment
     firewall
     v2_nginx
+    ;;
+	6)
+	update
 	;;
+
 	*)
 	echo "Enter Right[1-5]:"
 	;;
