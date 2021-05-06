@@ -36,7 +36,7 @@ firewall(){
 apt install ufw -y
 ufw default allow
 ufw default deny
-ufw allow 8443
+ufw allow 2096
 ufw allow 443
 ufw allow 80
 ufw allow 22222
