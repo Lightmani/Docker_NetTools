@@ -14,6 +14,7 @@ grub2-mkconfig -o /boot/grub2/grub.cfg
 sed -i 's/^GRUB_DEFAULT=.*/GRUB_DEFAULT=0/g' /etc/default/grub
 grub2-mkconfig -o /boot/grub2/grub.cfg
 grub2-mkconfig -o /boot/efi/EFI/centos/grub.cfg
+grub2-set-default 0
 
 #bbr
 sed -i '/net.core.default_qdisc/d' /etc/sysctl.conf
