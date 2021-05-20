@@ -6,8 +6,8 @@ read -p " 请输入你的网址:" yoursite
 
 apt update 
 apt upgrade -y
-apt install vim ufw curl wget unzip rng-tools cron -y
-
+apt install vim curl wget unzip rng-tools cron -y
+apt remove ufw
 
 #bbr
 sed -i '/net.core.default_qdisc/d' /etc/sysctl.conf
@@ -153,7 +153,6 @@ case "$menu_Num" in
 	;;
 	5)
 	environment
-    firewall
     v2_nginx
     ;;
 	6)
