@@ -65,6 +65,7 @@ apt install -y curl vim wget unzip apt-transport-https lsb-release ca-certificat
 
 mkdir /etc/xray
 curl  https://get.acme.sh | sh
+~/.acme.sh/acme.sh --register-account -m jsaafsdafaxcz@gmail1.com
 ~/.acme.sh/acme.sh --issue -d $yoursite --standalone -k ec-256
 ~/.acme.sh/acme.sh --installcert -d $yoursite --fullchainpath /etc/xray/v2ray.crt --keypath /etc/xray/v2ray.key --ecc
 
