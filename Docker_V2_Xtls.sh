@@ -77,15 +77,45 @@ apt install -y nginx
 
 systemctl enable nginx
 
+mkdir /var/www
+mkdir /var/www/site
+cd /srv
+wget https://github.com/zhangxiang958/Tour4U/archive/dev.zip
+unzip dev.zip -d /var/www/site/
+
 cat >> /etc/nginx/sites-enabled/site.conf << EOF
 server {  
         listen 80;
         listen [::]:80;
-        root /var/www/site/; 
+        root /var/www/site/Tour4U-dev/; 
         index index.php index.html;
         server_name $yoursite; 
 
+#安全设定
+	#屏蔽请求类型
+        if ($request_method  !~ ^(POST|GET)$) {
+                return  444;
+        }
+	add_header      X-Frame-Options         DENY;
+	add_header      X-XSS-Protection        "1; mode=block";
+	add_header      X-Content-Type-Options  nosniff;
+	# HSTS (ngx_http_headers_module is required) (15768000 seconds = 6 months)
+	###测试前请使用较少的时间
+	### https://www.nginx.com/blog/http-strict-transport-security-hsts-and-nginx/
+	add_header	Strict-Transport-Security max-age=15 always;
+	
+	#openssl dhparam -out dhparam.pem 2048
+	#openssl dhparam -out dhparam.pem 4096
+	#ssl_dhparam		/home/dhparam.pem;
+	#ssl_ecdh_curve		secp384r1;
 
+	# OCSP Stapling ---
+	# fetch OCSP records from URL in ssl_certificate and cache them
+	#ssl_stapling		on;
+	#ssl_stapling_verify	on;
+	#resolver_timeout	10s;
+	#resolver	8.8.8.8	valid=300s;
+			#范例 resolver	2.2.2.2		valid=300s;
       
 }
 EOF
