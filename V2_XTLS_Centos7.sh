@@ -100,7 +100,7 @@ unzip dev.zip -d /var/www/site/
 #config
 wget --no-check-certificate -O /etc/nginx/sites-enabled/site.conf https://github.com/Lightmani/Docker_NetTools/raw/master/config/site.conf
 sed -i "/server_name/c \\\t  server_name $yoursite;" /etc/nginx/sites-enabled/site.conf
-
+sed -i "/http_host = \"\"/c \\\t  http_host = \"$yoursite\"" /etc/nginx/sites-enabled/site.conf
 
 
 
