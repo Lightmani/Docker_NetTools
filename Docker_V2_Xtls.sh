@@ -69,6 +69,8 @@ curl  https://get.acme.sh | sh
 ~/.acme.sh/acme.sh --issue -d $yoursite --standalone -k ec-256
 ~/.acme.sh/acme.sh --installcert -d $yoursite --fullchainpath /etc/xray/v2ray.crt --keypath /etc/xray/v2ray.key --ecc
 
+(echo "59 23 * * * service nginx stop >> /dev/null 2>&1" ; crontab -l ) | crontab
+(echo "1 0 * * * service nginx start >> /dev/null 2>&1" ; crontab -l ) | crontab
 
 
 
