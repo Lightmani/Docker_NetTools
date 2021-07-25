@@ -1,5 +1,5 @@
-yum remove nginx
-apt remove nginx
+yum remove nginx -y
+apt remove nginx -y
 systemctl disable nginx
 
 docker stop v2ray
