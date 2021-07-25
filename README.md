@@ -1,5 +1,9 @@
 # Docker_NetTools
 
+安装探针
+wget https://raw.githubusercontent.com/cokemine/ServerStatus-Hotaru/master/status.sh && bash status.sh c
+
+
 使用Docker简单配置加密通讯程序
 
 ###################################################################
