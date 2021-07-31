@@ -7,7 +7,7 @@ read -p " 请输入你的网址:" yoursite
 apt update 
 apt upgrade -y
 apt install vim curl wget unzip rng-tools cron -y
-apt remove ufw
+
 
 #bbr
 sed -i '/net.core.default_qdisc/d' /etc/sysctl.conf
