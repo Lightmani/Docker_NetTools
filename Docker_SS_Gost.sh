@@ -56,7 +56,12 @@ cat>config.json<<EOF
 }
 EOF
 docker run -d --name ss-libev --restart always --net host -v /etc/shadowsocks-libev:/etc/shadowsocks-libev teddysun/shadowsocks-libev
+
 ufw allow $port
+firewall-cmd --permanent --zone=public --add-port=$port/tcp
+firewall-cmd --permanent --zone=public --add-port=$port/udp
+firewall-cmd --reload
+
 clear
 echo 您的SS端口是$port
 echo 您的SS密码是$pass
