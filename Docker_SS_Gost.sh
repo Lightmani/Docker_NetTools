@@ -38,10 +38,10 @@ ss(){
 read -p " 请输入你的端口:" port
 read -p " 请输入你的DNS:" dns
 read -p " 请输入你的Docker's Name:" name
+pass=$(cat /proc/sys/kernel/random/uuid)
 
-
-mkdir /etc/shadowsocks-libev
-cd /etc/shadowsocks-libev
+mkdir /etc/ss-$name
+cd /etc/ss-$name
 cat>config.json<<EOF
 {
 "server":"0.0.0.0",
@@ -56,7 +56,7 @@ cat>config.json<<EOF
 "plugin_opts":""
 }
 EOF
-docker run -d --name $name --restart always --net host -v /etc/shadowsocks-libev:/etc/shadowsocks-libev teddysun/shadowsocks-libev
+docker run -d --name $name --restart always --net host -v /etc/ss-$name:/etc/shadowsocks-libev teddysun/shadowsocks-libev
 
 ufw allow $port
 firewall-cmd --permanent --zone=public --add-port=$port/tcp
