@@ -1,5 +1,6 @@
 #初始环境
 
+env(){
 
 apt update 
 apt upgrade -y
@@ -22,7 +23,6 @@ ufw allow 8443
 ufw allow 443
 ufw allow 80
 ufw allow 22
-ufw allow 55555
 systemctl enable ufw
 systemctl start ufw
 
@@ -31,25 +31,38 @@ wget -qO- get.docker.com | bash
 systemctl enable docker
 systemctl start docker
 
+}
+
+ss(){
 #Shadowsocks
+read -p " 请输入你的端口:" port
+read -p " 请输入你的DNS:" dns
+
+
 mkdir /etc/shadowsocks-libev
 cd /etc/shadowsocks-libev
 cat>config.json<<EOF
 {
 "server":"0.0.0.0",
-"server_port":55555,
+"server_port":$port,
 "password":"$pass",
 "timeout":300,
 "method":"chacha20-ietf-poly1305",
 "fast_open":true,
-"nameserver":"1.0.0.1",
+"nameserver":"$dns",
 "mode":"tcp_and_udp",
 "plugin":"",
 "plugin_opts":""
 }
 EOF
 docker run -d --name ss-libev --restart always --net host -v /etc/shadowsocks-libev:/etc/shadowsocks-libev teddysun/shadowsocks-libev
+ufw allow $port
+clear
+echo 您的SS端口是$port
+echo 您的SS密码是$pass
+}
 
+gost(){
 #gost
 docker pull ginuerzh/gost
 mkdir /etc/gost
@@ -64,7 +77,31 @@ cat>config.json<<EOF
 }
 EOF
 docker run -d --net host --restart always --name gost -v /etc/gost:/etc/gost ginuerzh/gost -C /etc/gost/config.json
+}
 
 
-clear
-echo $pass
+echo -e "1.Environment"
+echo -e "2.Add SS"
+echo -e "3.Add Gost"
+echo -e "4.ALL"
+read -p "Press:" menu_Num
+case "$menu_Num" in
+	1)
+	env
+	;;
+	2)
+	ss
+	;;
+	3)
+	gost
+	;;
+	4)
+	env
+    ss
+    gost
+	;;
+	*)
+	echo "Enter Right[1-5]:"
+	;;
+esac
+
