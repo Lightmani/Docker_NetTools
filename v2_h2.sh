@@ -81,9 +81,10 @@ unzip dev.zip -d /var/www/site/
 cd /etc/caddy/
 rm -f Caddyfile
 wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/caddy.json -cO Caddyfile
-sed -i "/dasdczxyrtgm345xa2/c \\\t  $yoursite" /etc/caddy/Caddyfile
-sed -i "/SeuW56Es/c \\\t  $path" /etc/caddy/Caddyfile
-sed -i "/cdngrpc/c \\\t  $path2" /etc/caddy/Caddyfile
+
+sed 's/dasdczxyrtgm345xa2/$yoursite/g' /etc/caddy/Caddyfile
+sed 's/SeuW56Es/$path/g' /etc/caddy/Caddyfile
+sed 's/cdngrpc/$path2/g' /etc/caddy/Caddyfile
 
 #V2ray
 wget -qO- get.docker.com | bash
@@ -118,6 +119,32 @@ docker run -d --name v2ray --restart always --net host -v /etc/v2ray:/etc/v2ray 
 
 }
 
+caddy(){
+read -p " 请输入你的网址:" yoursite
+
+apt install -y curl vim wget unzip apt-transport-https lsb-release ca-certificates git gnupg2 netcat socat 
+
+apt install -y debian-keyring debian-archive-keyring apt-transport-https
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo tee /etc/apt/trusted.gpg.d/caddy-stable.asc
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
+apt update -y
+apt install caddy -y
+
+mkdir /var/www
+mkdir /var/www/site
+cd /srv
+wget https://github.com/zhangxiang958/Tour4U/archive/dev.zip
+unzip dev.zip -d /var/www/site/
+
+cd /etc/caddy/
+rm -f Caddyfile
+wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/caddy.json -cO Caddyfile
+
+sed 's/dasdczxyrtgm345xa2/$yoursite/g' /etc/caddy/Caddyfile
+sed 's/SeuW56Es/$path/g' /etc/caddy/Caddyfile
+sed 's/cdngrpc/$path2/g' /etc/caddy/Caddyfile
+
+}
 
 echo -e "1.Environment"
 echo -e "2.V2Ray+Nginx"
@@ -125,6 +152,7 @@ echo -e "3.SSH"
 echo -e "4.Firewall"
 echo -e "5.All"
 echo -e "6.Update"
+echo -e "7.Add a caddy site"
 read -p "Press:" menu_Num
 case "$menu_Num" in
 	1)
@@ -146,8 +174,10 @@ case "$menu_Num" in
 	6)
 	update
 	;;
-
+	7)
+	caddy
+	;;
 	*)
-	echo "Enter Right[1-6]:"
+	echo "Enter Right[1-7]:"
 	;;
 esac
