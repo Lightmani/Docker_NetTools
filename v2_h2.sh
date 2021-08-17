@@ -8,7 +8,7 @@ environment(){
 
 apt update 
 apt upgrade -y
-apt install vim curl wget unzip rng-tools cron -y
+apt install vim curl wget unzip rng-tools cron sudo -y
 echo "HRNGDEVICE=/dev/urandom">>/etc/default/rng-tools
 
 #bbr
@@ -75,7 +75,7 @@ service sshd restart
 caddy(){
 
 
-apt install -y curl vim wget unzip apt-transport-https lsb-release ca-certificates git gnupg2 netcat socat 
+apt install -y curl vim wget unzip apt-transport-https lsb-release ca-certificates git gnupg2 netcat socat sudo
 
 apt install -y debian-keyring debian-archive-keyring apt-transport-https
 curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo tee /etc/apt/trusted.gpg.d/caddy-stable.asc
