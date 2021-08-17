@@ -8,11 +8,11 @@
 }
 
 :443, :2096, dasdczxyrtgm345xa2 {
-	tls {
-		ciphers TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256 TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256
-		alpn h2 http/1.1
-	}
-
+	 tls {
+        protocols tls1.2 tls1.3
+        ciphers TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256
+        curves x25519
+    }
 	reverse_proxy /SeuW56Es 127.0.0.1:18888 {
 		flush_interval -1
 		transport http {
