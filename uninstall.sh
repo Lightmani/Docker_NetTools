@@ -1,5 +1,6 @@
 yum remove nginx -y
 apt remove nginx -y
+apt autoremove -y
 systemctl disable nginx
 rm -rf /etc/nginx
 
