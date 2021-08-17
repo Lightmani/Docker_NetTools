@@ -80,7 +80,7 @@ unzip dev.zip -d /var/www/site/
 
 cd /etc/caddy/
 rm -f Caddyfile
-wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/caddy.json -cO Caddyfile
+wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/Caddy -cO Caddyfile
 
 sed -i 's/dasdczxyrtgm345xa2/$yoursite/g' /etc/caddy/Caddyfile
 sed -i 's/SeuW56Es/$path/g' /etc/caddy/Caddyfile
@@ -108,7 +108,7 @@ echo "*******************************************************************"
 
 echo -e "${Red} 用户id（UUID）：${Font} ${UUID}"
 echo -e "${Red} H2传输Path ：${Font} ${path}"
-echo -e "${Red} Grpc传输Path ：${Font} ${path2}"
+echo -e "${Red} Grpc传输Path ：${Font} ${pathgrpc}"
 }
 
 update(){
@@ -125,7 +125,7 @@ read -p " 请输入你的网址:" yoursite
 
 cd /etc/caddy/
 rm -f Caddyfile
-wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/caddy.json -cO Caddyfile
+wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/Caddy -cO Caddyfile
 
 sed -i "s/dasdczxyrtgm345xa2/$yoursite/g" /etc/caddy/Caddyfile
 sed -i "s/SeuW56Es/$path/g" /etc/caddy/Caddyfile
@@ -135,7 +135,7 @@ modify_port_UUID
 
 echo -e "${Red} 用户id（UUID）：${Font} ${UUID}"
 echo -e "${Red} H2传输Path ：${Font} ${path}"
-echo -e "${Red} Grpc传输Path ：${Font} ${path2}"
+echo -e "${Red} Grpc传输Path ：${Font} ${pathgrpc}"
 
 }
 
