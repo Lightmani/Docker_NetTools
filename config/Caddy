@@ -18,11 +18,6 @@
 		transport http {
 			versions h2c
 		}
-    	reverse_proxy /cdngrpc 127.0.0.1:28888 {
-		flush_interval -1
-		transport http {
-			versions h2c
-		}
 	}
 
 	@host {
