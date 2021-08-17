@@ -33,7 +33,8 @@
               }]
             }]
           },
-{
+                     {
+                     "match": [{
               "path": ["/cdngrpc"] //与vless+grpc或vmess+grpc应用中serviceName对应
             }],
             "handle": [{
