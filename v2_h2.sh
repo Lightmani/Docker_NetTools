@@ -29,8 +29,8 @@ path2=$(openssl rand -base64 32)
     sed -i "/\"id\"/c \\\t  \"id\":\"${UUID}\"," /etc/v2ray/config.json
 sed -i "/\"password\"/c \\\t  \"password\":\"${UUID}\"," /etc/v2ray/config.json
 
-sed -i 's/SeuW56Es/$path/g' /etc/v2ray/config.json
-sed -i 's/cdngrpc/$path2/g' /etc/v2ray/config.json
+sed -i "s/SeuW56Es/$path/g" /etc/v2ray/config.json
+sed -i "s/cdngrpc/$path2/g" /etc/v2ray/config.json
 }
 
 #Firewall
@@ -127,9 +127,9 @@ cd /etc/caddy/
 rm -f Caddyfile
 wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/caddy.json -cO Caddyfile
 
-sed -i's/dasdczxyrtgm345xa2/$yoursite/g' /etc/caddy/Caddyfile
-sed -i 's/SeuW56Es/$path/g' /etc/caddy/Caddyfile
-sed -i 's/cdngrpc/$path2/g' /etc/caddy/Caddyfile
+sed -i "s/dasdczxyrtgm345xa2/$yoursite/g" /etc/caddy/Caddyfile
+sed -i "s/SeuW56Es/$path/g" /etc/caddy/Caddyfile
+sed -i "s/cdngrpc/$path2/g" /etc/caddy/Caddyfile
 
 modify_port_UUID
 
