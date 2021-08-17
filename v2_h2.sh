@@ -80,10 +80,10 @@ unzip dev.zip -d /var/www/site/
 
 cd /etc/caddy/
 rm -f Caddyfile
-wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/caddy.json -cO $yoursite.json
-sed -i "/dasdczxyrtgm345xa2/c \\\t  $yoursite" /etc/caddy/$yoursite.json
-sed -i "/SeuW56Es/c \\\t  $path" /etc/caddy/$yoursite.json
-sed -i "/cdngrpc/c \\\t  $path2" /etc/caddy/$yoursite.json
+wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/caddy.json -cO Caddyfile
+sed -i "/dasdczxyrtgm345xa2/c \\\t  $yoursite" /etc/caddy/Caddyfile
+sed -i "/SeuW56Es/c \\\t  $path" /etc/caddy/Caddyfile
+sed -i "/cdngrpc/c \\\t  $path2" /etc/caddy/Caddyfile
 
 #V2ray
 wget -qO- get.docker.com | bash
