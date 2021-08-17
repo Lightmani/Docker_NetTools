@@ -17,8 +17,13 @@ echo "net.core.default_qdisc = fq" >> /etc/sysctl.conf
 echo "net.ipv4.tcp_congestion_control = bbr" >> /etc/sysctl.conf
 sysctl -p >/dev/null 2>&1
 
+wget -qO- get.docker.com | bash
+systemctl enable docker
+systemctl start docker
 
 }
+
+
 
 modify_port_UUID(){
 
@@ -32,6 +37,11 @@ sed -i "/\"password\"/c \\\t  \"password\":\"${UUID}\"," /etc/v2ray/config.json
 
 sed -i "s/SeuW56Es/$path/g" /etc/v2ray/config.json
 sed -i "s/cdngrpc/$pathgrpc/g" /etc/v2ray/config.json
+
+sed -i 's/dasdczxyrtgm345xa2/$yoursite/g' /etc/caddy/Caddyfile
+sed -i 's/SeuW56Es/$path/g' /etc/caddy/Caddyfile
+sed -i 's/cdngrpc/$pathgrpc/g' /etc/caddy/Caddyfile
+
 }
 
 #Firewall
@@ -61,7 +71,6 @@ service sshd restart
 }
 
 
-#LNMP一键
 caddy(){
 
 
@@ -83,17 +92,11 @@ cd /etc/caddy/
 rm -f Caddyfile
 wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/Caddy -cO Caddyfile
 
-sed -i 's/dasdczxyrtgm345xa2/$yoursite/g' /etc/caddy/Caddyfile
-sed -i 's/SeuW56Es/$path/g' /etc/caddy/Caddyfile
-sed -i 's/cdngrpc/$pathgrpc/g' /etc/caddy/Caddyfile
 
 }
 
 v2(){
 #V2ray
-wget -qO- get.docker.com | bash
-systemctl enable docker
-systemctl start docker
 
 mkdir /etc/v2ray
 cd /etc/v2ray
