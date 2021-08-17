@@ -22,8 +22,8 @@ sysctl -p >/dev/null 2>&1
 modify_port_UUID(){
 
     UUID=$(cat /proc/sys/kernel/random/uuid)
-    path=$(openssl rand -base64 16)
-pathgrpc=$(openssl rand -base64 18)
+    path=$(openssl rand -hex 12)
+pathgrpc=$(openssl rand -hex 13)
 
 
     sed -i "/\"id\"/c \\\t  \"id\":\"${UUID}\"," /etc/v2ray/config.json
