@@ -1,8 +1,9 @@
 #初始环境
-environment(){
-
+web(){
 read -p " 请输入你的网址:" yoursite
+}
 
+environment(){
 
 apt update 
 apt upgrade -y
@@ -61,7 +62,7 @@ service sshd restart
 
 
 #LNMP一键
-v2_nginx(){
+caddy(){
 
 
 apt install -y curl vim wget unzip apt-transport-https lsb-release ca-certificates git gnupg2 netcat socat 
@@ -86,6 +87,9 @@ sed -i 's/dasdczxyrtgm345xa2/$yoursite/g' /etc/caddy/Caddyfile
 sed -i 's/SeuW56Es/$path/g' /etc/caddy/Caddyfile
 sed -i 's/cdngrpc/$pathgrpc/g' /etc/caddy/Caddyfile
 
+}
+
+v2(){
 #V2ray
 wget -qO- get.docker.com | bash
 systemctl enable docker
@@ -120,39 +124,22 @@ docker run -d --name v2ray --restart always --net host -v /etc/v2ray:/etc/v2ray 
 
 }
 
-caddy(){
-read -p " 请输入你的网址:" yoursite
 
-cd /etc/caddy/
-rm -f Caddyfile
-wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/Caddy -cO Caddyfile
-
-sed -i "s/dasdczxyrtgm345xa2/$yoursite/g" /etc/caddy/Caddyfile
-sed -i "s/SeuW56Es/$path/g" /etc/caddy/Caddyfile
-sed -i "s/cdngrpc/$pathgrpc/g" /etc/caddy/Caddyfile
-
-modify_port_UUID
-
-echo -e "${Red} 用户id（UUID）：${Font} ${UUID}"
-echo -e "${Red} H2传输Path ：${Font} ${path}"
-echo -e "${Red} Grpc传输Path ：${Font} ${pathgrpc}"
-
-}
 
 echo -e "1.Environment"
-echo -e "2.V2Ray+Nginx"
+echo -e "2.V2Ray"
 echo -e "3.SSH"
 echo -e "4.Firewall"
 echo -e "5.All"
 echo -e "6.Update"
-echo -e "7.重置Caddy网站设置"
+echo -e "7.Caddy网站"
 read -p "Press:" menu_Num
 case "$menu_Num" in
 	1)
 	environment
 	;;
 	2)
-	v2_nginx
+	v2
 	;;
 	3)
 	ssha
@@ -161,13 +148,16 @@ case "$menu_Num" in
 	firewall
 	;;
 	5)
+	web
 	environment
-    v2_nginx
+	caddy
+    v2
     ;;
 	6)
 	update
 	;;
 	7)
+	web
 	caddy
 	;;
 	*)
