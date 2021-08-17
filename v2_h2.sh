@@ -99,7 +99,7 @@ wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/Caddy -cO Ca
 
 v2(){
 #V2ray
-
+service caddy stop
 mkdir /etc/v2ray
 curl  https://get.acme.sh | sh
 ~/.acme.sh/acme.sh --register-account -m jsaafsdafa321352xcz@gmail1.com
