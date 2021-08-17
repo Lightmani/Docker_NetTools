@@ -23,7 +23,7 @@ modify_port_UUID(){
 
     UUID=$(cat /proc/sys/kernel/random/uuid)
     path=$(openssl rand -base64 32)
-
+path2=$(openssl rand -base64 32)
 
 
     sed -i "/\"id\"/c \\\t  \"id\":\"${UUID}\"," /etc/v2ray/config.json
@@ -64,11 +64,11 @@ v2_nginx(){
 
 apt install -y curl vim wget unzip apt-transport-https lsb-release ca-certificates git gnupg2 netcat socat 
 
-sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https
+apt install -y debian-keyring debian-archive-keyring apt-transport-https
 curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo tee /etc/apt/trusted.gpg.d/caddy-stable.asc
 curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
-sudo apt update
-sudo apt install caddy
+apt update -y
+apt install caddy -y
 
 mkdir /var/www
 mkdir /var/www/site
@@ -81,7 +81,7 @@ rm -f Caddyfile
 wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/caddy.json -cO $yoursite.json
 sed -i "/dasdczxyrtgm345xa2/c \\\t  $yoursite" /etc/caddy/$yoursite.json
 sed -i "/SeuW56Es/c \\\t  $path" /etc/caddy/$yoursite.json
-
+sed -i "/cdngrpc/c \\\t  $path2" /etc/caddy/$yoursite.json
 
 #V2ray
 wget -qO- get.docker.com | bash
