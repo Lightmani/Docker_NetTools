@@ -38,9 +38,9 @@ sed -i "/\"password\"/c \\\t  \"password\":\"${UUID}\"," /etc/v2ray/config.json
 sed -i "s/SeuW56Es/$path/g" /etc/v2ray/config.json
 sed -i "s/cdngrpc/$pathgrpc/g" /etc/v2ray/config.json
 
-sed -i 's/dasdczxyrtgm345xa2/$yoursite/g' /etc/caddy/Caddyfile
-sed -i 's/SeuW56Es/$path/g' /etc/caddy/Caddyfile
-sed -i 's/cdngrpc/$pathgrpc/g' /etc/caddy/Caddyfile
+sed -i "s/dasdczxyrtgm345xa2/$yoursite/g" /etc/caddy/Caddyfile
+sed -i "s/SeuW56Es/$path/g" /etc/caddy/Caddyfile
+sed -i "s/cdngrpc/$pathgrpc/g" /etc/caddy/Caddyfile
 
 }
 
@@ -135,7 +135,7 @@ echo -e "3.SSH"
 echo -e "4.Firewall"
 echo -e "5.All"
 echo -e "6.Update"
-echo -e "7.Caddy网站"
+echo -e "7.Caddy+V2"
 read -p "Press:" menu_Num
 case "$menu_Num" in
 	1)
@@ -162,6 +162,7 @@ case "$menu_Num" in
 	7)
 	web
 	caddy
+	v2
 	;;
 	*)
 	echo "Enter Right[1-7]:"
