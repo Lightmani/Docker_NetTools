@@ -29,6 +29,8 @@ path2=$(openssl rand -base64 32)
     sed -i "/\"id\"/c \\\t  \"id\":\"${UUID}\"," /etc/v2ray/config.json
 sed -i "/\"password\"/c \\\t  \"password\":\"${UUID}\"," /etc/v2ray/config.json
 
+sed -i "/SeuW56Es/c \\\t  $path" /etc/v2ray/config.json
+sed -i "/cdngrpc/c \\\t  $path2" /etc/v2ray/config.json
 }
 
 #Firewall
