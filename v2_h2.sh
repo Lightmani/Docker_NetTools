@@ -37,6 +37,7 @@ sed -i "/\"password\"/c \\\t  \"password\":\"${UUID}\"," /etc/v2ray/config.json
 
 sed -i "s/SeuW56Es/$path/g" /etc/v2ray/config.json
 sed -i "s/cdngrpc/$pathgrpc/g" /etc/v2ray/config.json
+sed -i "s/dasdczxyrtgm345xa2/$yoursite/g" /etc/v2ray/config.json
 
 sed -i "s/dasdczxyrtgm345xa2/$yoursite/g" /etc/caddy/Caddyfile
 sed -i "s/SeuW56Es/$path/g" /etc/caddy/Caddyfile
