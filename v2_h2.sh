@@ -29,8 +29,8 @@ path2=$(openssl rand -base64 32)
     sed -i "/\"id\"/c \\\t  \"id\":\"${UUID}\"," /etc/v2ray/config.json
 sed -i "/\"password\"/c \\\t  \"password\":\"${UUID}\"," /etc/v2ray/config.json
 
-sed -i "/SeuW56Es/c \\\t  $path" /etc/v2ray/config.json
-sed -i "/cdngrpc/c \\\t  $path2" /etc/v2ray/config.json
+sed -i 's/SeuW56Es/$path/g' /etc/v2ray/config.json
+sed -i 's/cdngrpc/$path2/g' /etc/v2ray/config.json
 }
 
 #Firewall
@@ -82,9 +82,9 @@ cd /etc/caddy/
 rm -f Caddyfile
 wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/caddy.json -cO Caddyfile
 
-sed 's/dasdczxyrtgm345xa2/$yoursite/g' /etc/caddy/Caddyfile
-sed 's/SeuW56Es/$path/g' /etc/caddy/Caddyfile
-sed 's/cdngrpc/$path2/g' /etc/caddy/Caddyfile
+sed -i's/dasdczxyrtgm345xa2/$yoursite/g' /etc/caddy/Caddyfile
+sed -i 's/SeuW56Es/$path/g' /etc/caddy/Caddyfile
+sed -i 's/cdngrpc/$path2/g' /etc/caddy/Caddyfile
 
 #V2ray
 wget -qO- get.docker.com | bash
@@ -107,7 +107,8 @@ service caddy restart
 echo "*******************************************************************"
 
 echo -e "${Red} 用户id（UUID）：${Font} ${UUID}"
-echo -e "${Red} SS Password ：${Font} ${path}"
+echo -e "${Red} H2传输Path ：${Font} ${path}"
+echo -e "${Red} Grpc传输Path ：${Font} ${path2}"
 }
 
 update(){
@@ -122,27 +123,19 @@ docker run -d --name v2ray --restart always --net host -v /etc/v2ray:/etc/v2ray 
 caddy(){
 read -p " 请输入你的网址:" yoursite
 
-apt install -y curl vim wget unzip apt-transport-https lsb-release ca-certificates git gnupg2 netcat socat 
-
-apt install -y debian-keyring debian-archive-keyring apt-transport-https
-curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo tee /etc/apt/trusted.gpg.d/caddy-stable.asc
-curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
-apt update -y
-apt install caddy -y
-
-mkdir /var/www
-mkdir /var/www/site
-cd /srv
-wget https://github.com/zhangxiang958/Tour4U/archive/dev.zip
-unzip dev.zip -d /var/www/site/
-
 cd /etc/caddy/
 rm -f Caddyfile
 wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/caddy.json -cO Caddyfile
 
-sed 's/dasdczxyrtgm345xa2/$yoursite/g' /etc/caddy/Caddyfile
-sed 's/SeuW56Es/$path/g' /etc/caddy/Caddyfile
-sed 's/cdngrpc/$path2/g' /etc/caddy/Caddyfile
+sed -i's/dasdczxyrtgm345xa2/$yoursite/g' /etc/caddy/Caddyfile
+sed -i 's/SeuW56Es/$path/g' /etc/caddy/Caddyfile
+sed -i 's/cdngrpc/$path2/g' /etc/caddy/Caddyfile
+
+modify_port_UUID
+
+echo -e "${Red} 用户id（UUID）：${Font} ${UUID}"
+echo -e "${Red} H2传输Path ：${Font} ${path}"
+echo -e "${Red} Grpc传输Path ：${Font} ${path2}"
 
 }
 
@@ -152,7 +145,7 @@ echo -e "3.SSH"
 echo -e "4.Firewall"
 echo -e "5.All"
 echo -e "6.Update"
-echo -e "7.Add a caddy site"
+echo -e "7.重置Caddy网站设置"
 read -p "Press:" menu_Num
 case "$menu_Num" in
 	1)
