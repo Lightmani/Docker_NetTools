@@ -17,7 +17,7 @@
     "http": {
       "servers": {
         "https": {
-          "listen": [":443"],
+          "listen": [":443",":2096","[::]:443","[::]:2096"],
           "routes": [{
             "match": [{
               "path": ["/SeuW56Es"]
