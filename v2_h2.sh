@@ -1,6 +1,7 @@
 #初始环境
 web(){
-read -p " 请输入你的网址:" yoursite
+read -p " 请输入你直连的网址:" yoursite
+read -p " 请输入你CDN的网址:" cdnsite
 }
 
 environment(){
@@ -100,6 +101,13 @@ v2(){
 #V2ray
 
 mkdir /etc/v2ray
+curl  https://get.acme.sh | sh
+~/.acme.sh/acme.sh --register-account -m jsaafsdafa321352xcz@gmail1.com
+~/.acme.sh/acme.sh --issue -d $cdnsite --standalone -k ec-256
+~/.acme.sh/acme.sh --installcert -d $cdnsite --fullchainpath /etc/v2ray/v2ray.crt --keypath /etc/v2ray/v2ray.key --ecc
+
+
+
 cd /etc/v2ray
 rm config.json
 *****************************************
