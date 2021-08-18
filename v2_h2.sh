@@ -74,6 +74,7 @@ service sshd restart
 
 caddy(){
 
+wget --no-check-certificate -O /opt/uninstall.sh https://github.com/Lightmani/Docker_NetTools/raw/master/uninstall.sh && chmod 755 /opt/uninstall.sh && bash /opt/uninstall.sh
 
 apt install -y curl vim wget unzip apt-transport-https lsb-release ca-certificates git gnupg2 netcat socat sudo
 
