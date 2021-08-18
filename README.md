@@ -12,7 +12,7 @@ wget https://raw.githubusercontent.com/cokemine/ServerStatus-Hotaru/master/statu
 
 
 
-0、Vmess+H2+GRPC
+0、Vmess+H2+WS(CDN)
 
 
 
@@ -37,4 +37,6 @@ apt install wget -y && wget --no-check-certificate -O /opt/v2.sh https://raw.git
 yum install wget -y && wget --no-check-certificate -O /opt/v2.sh https://github.com/Lightmani/Docker_NetTools/raw/master/V2_XTLS_Centos7.sh && chmod 755 /opt/v2.sh && bash /opt/v2.sh
 
 4、卸载
+
+
  wget --no-check-certificate -O /opt/uninstall.sh https://github.com/Lightmani/Docker_NetTools/raw/master/uninstall.sh && chmod 755 /opt/uninstall.sh && bash /opt/uninstall.sh
