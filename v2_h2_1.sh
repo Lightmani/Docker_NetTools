@@ -107,7 +107,7 @@ mkdir /etc/v2ray
 cd /etc/v2ray
 rm config.json
 *****************************************
-wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/v2.config  -cO config.json
+wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/v3.config  -cO config.json
 modify_port_UUID
 docker pull teddysun/v2ray
 docker run -d --name v2ray --restart always --net host -v /etc/v2ray:/etc/v2ray teddysun/v2ray
