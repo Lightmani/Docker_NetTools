@@ -22,11 +22,7 @@ apt install wget -y && wget --no-check-certificate -O /opt/v2.sh https://github.
 
 1、Shadowsocks（AEAD加密）+Gost隧道
 
-目前仅支持Ubuntu18+/Debian9+
 
-Gost采用开启多路复用的Websocket隧道
-
-SS默认使用AEAD加密，密码使用随机生成的UUID
 
 运行：
 
@@ -39,3 +35,6 @@ apt install wget -y && wget --no-check-certificate -O /opt/v2.sh https://raw.git
 3. Xray For Centos
 
 yum install wget -y && wget --no-check-certificate -O /opt/v2.sh https://github.com/Lightmani/Docker_NetTools/raw/master/V2_XTLS_Centos7.sh && chmod 755 /opt/v2.sh && bash /opt/v2.sh
+
+4、卸载
+ wget --no-check-certificate -O /opt/uninstall.sh https://github.com/Lightmani/Docker_NetTools/raw/master/uninstall.sh && chmod 755 /opt/uninstall.sh && bash /opt/uninstall.sh
