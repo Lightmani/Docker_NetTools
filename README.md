@@ -12,13 +12,15 @@ wget https://raw.githubusercontent.com/cokemine/ServerStatus-Hotaru/master/statu
 
 
 
-0、Vmess+H2+WS(CDN)
-
-
+0、
+Vmess+H2+WS(CDN)
 
 apt install wget -y && wget --no-check-certificate -O /opt/v2.sh https://github.com/Lightmani/Docker_NetTools/raw/master/v2_h2.sh && chmod 755 /opt/v2.sh && bash /opt/v2.sh
 
 
+Vmess+H2+WS(without CDN Certify)
+
+apt install wget -y && wget --no-check-certificate -O /opt/v2.sh https://github.com/Lightmani/Docker_NetTools/raw/master/v2_h2_1.sh && chmod 755 /opt/v2.sh && bash /opt/v2.sh
 
 1、Shadowsocks（AEAD加密）+Gost隧道
 
