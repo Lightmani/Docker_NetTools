@@ -1,0 +1,49 @@
+{
+	order reverse_proxy before map
+	admin off
+	log {
+		output file /var/log/caddy/access.log
+		level ERROR
+	}
+}
+
+:443, :2096, dasdczxyrtgm345xa2 {
+	 tls {
+        protocols tls1.2 tls1.3
+        ciphers TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256
+        curves x25519
+    }
+    
+#WSConfig
+ reverse_proxy /SeuW56Es 127.0.0.1:18888 {
+		flush_interval -1
+		transport http {
+			versions h2c
+		}
+	}
+  
+  #H2Config
+    @websocket {
+        path /dawe321gzc
+        header Connection *Upgrade*
+        header Upgrade websocket
+    }
+    
+    reverse_proxy @websocket 127.0.0.1:28888
+
+	@host {
+		host dasdczxyrtgm345xa2 
+	}
+	route @host {
+		header {
+			Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+		}
+		file_server {
+			root /var/www/site/Tour4U-dev/
+		}
+	}
+}
+
+
+	
+
