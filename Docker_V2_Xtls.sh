@@ -15,20 +15,27 @@ sed -i '/net.ipv4.tcp_congestion_control/d' /etc/sysctl.conf
 echo "net.core.default_qdisc = fq" >> /etc/sysctl.conf
 echo "net.ipv4.tcp_congestion_control = bbr" >> /etc/sysctl.conf
 sysctl -p >/dev/null 2>&1
+echo "HRNGDEVICE=/dev/urandom">>/etc/default/rng-tools
 
+wget -qO- get.docker.com | bash
+systemctl enable docker
+systemctl start docker
 
 }
 
 modify_port_UUID(){
 
     UUID=$(cat /proc/sys/kernel/random/uuid)
-    pass=$(openssl rand -base64 8)
 
 
 
-    sed -i "/\"id\"/c \\\t  \"id\":\"${UUID}\"," /etc/xray/config.json
-sed -i "/\"password\"/c \\\t  \"password\":\"${UUID}\"," /etc/xray/config.json
 
+    sed -i "/\"id\"/c \\\t  \"id\":\"${UUID}\"," /etc/v2ray/config.json
+sed -i "/\"password\"/c \\\t  \"password\":\"${UUID}\"," /etc/v2ray/config.json
+sed -i "s/dasdczxyrtgm345xa2/$yoursite/g" /etc/v2ray/config.json
+
+sed -i "/server_name/c \\\t  server_name $yoursite;" /etc/nginx/sites-enabled/site.conf
+sed -i "/http_host = \"\"/c \\\t  \$http_host = \"$yoursite\"" /etc/nginx/sites-enabled/site.conf
 }
 
 #Firewall
@@ -66,12 +73,6 @@ apt-get update
 apt install -y curl vim wget unzip apt-transport-https lsb-release ca-certificates git gnupg2 netcat socat 
 apt-get -t jessie-backports install nginx-full -y
 
-mkdir /etc/xray
-curl  https://get.acme.sh | sh
-~/.acme.sh/acme.sh --register-account -m jsaafsdafa321352xcz@gmail1.com
-~/.acme.sh/acme.sh --issue -d $yoursite --standalone -k ec-256
-~/.acme.sh/acme.sh --installcert -d $yoursite --fullchainpath /etc/xray/$yoursite.crt --keypath /etc/xray/$yoursite.key --ecc
-
 (echo "59 23 * * * service nginx stop >> /dev/null 2>&1" ; crontab -l ) | crontab
 (echo "1 1 * * * service nginx start >> /dev/null 2>&1" ; crontab -l ) | crontab
 
@@ -88,30 +89,29 @@ unzip dev.zip -d /var/www/site/
 
 #config
 wget --no-check-certificate -O /etc/nginx/sites-enabled/site.conf https://github.com/Lightmani/Docker_NetTools/raw/master/config/site.conf
-sed -i "/server_name/c \\\t  server_name $yoursite;" /etc/nginx/sites-enabled/site.conf
-sed -i "/http_host = \"\"/c \\\t  \$http_host = \"$yoursite\"" /etc/nginx/sites-enabled/site.conf
 
 
-
-
-
-#rng
-echo "HRNGDEVICE=/dev/urandom">>/etc/default/rng-tools
 
 
 #V2ray
-wget -qO- get.docker.com | bash
-systemctl enable docker
-systemctl start docker
+#V2ray
+service nginx stop
+mkdir /etc/v2ray
 
-mkdir /etc/xray
-cd /etc/xray
+curl  https://get.acme.sh | sh
+~/.acme.sh/acme.sh --register-account -m jsaafsdafa321352xcz@gmail1.com
+~/.acme.sh/acme.sh --issue -d $yoursite --standalone -k ec-256
+~/.acme.sh/acme.sh --installcert -d $yoursite --fullchainpath /etc/v2ray/v2ray.crt --keypath /etc/v2ray/v2ray.key --ecc
+
+
+
+cd /etc/v2ray
 rm config.json
 *****************************************
 wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/V2_XTLS.config  -cO config.json
 modify_port_UUID
-docker pull teddysun/xray
-docker run -d --name v2ray --restart always --net host -v /etc/xray:/etc/xray teddysun/xray
+docker pull teddysun/v2ray
+docker run -d --name v2ray --restart always --net host -v /etc/v2ray:/etc/v2ray teddysun/v2ray
 
 service nginx restart
 
@@ -120,14 +120,15 @@ service nginx restart
 echo "*******************************************************************"
 
 echo -e "${Red} 用户id（UUID）：${Font} ${UUID}"
-echo -e "${Red} SS Password ：${Font} ${pass}"
+
 }
 
 update(){
-docker pull teddysun/xray
+
+docker pull teddysun/v2ray
 docker stop v2ray
 docker rm v2ray
-docker run -d --name v2ray --restart always --net host -v /etc/xray:/etc/xray teddysun/xray
+docker run -d --name v2ray --restart always --net host -v /etc/v2ray:/etc/v2ray teddysun/v2ray
 
 
 }
