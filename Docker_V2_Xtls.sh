@@ -68,10 +68,10 @@ service sshd restart
 #LNMP一键
 v2_nginx(){
 
-echo "deb http://ftp.debian.org/debian jessie-backports main" > /etc/apt/sources.list.d/nginx-backport.list
-apt-get update
+
 apt install -y curl vim wget unzip apt-transport-https lsb-release ca-certificates git gnupg2 netcat socat 
-apt-get -t jessie-backports install nginx-full -y
+apt install -y nginx
+
 
 (echo "59 23 * * * service nginx stop >> /dev/null 2>&1" ; crontab -l ) | crontab
 (echo "1 1 * * * service nginx start >> /dev/null 2>&1" ; crontab -l ) | crontab
