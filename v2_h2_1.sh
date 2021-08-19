@@ -90,6 +90,7 @@ apt install caddy -y
 mkdir /var/www
 mkdir /var/www/site
 cd /srv
+rm dev.zip
 wget https://github.com/zhangxiang958/Tour4U/archive/dev.zip
 unzip dev.zip -d /var/www/site/
 
