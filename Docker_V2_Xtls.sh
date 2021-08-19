@@ -7,7 +7,7 @@ environment(){
 apt update 
 apt upgrade -y
 apt install vim curl wget unzip rng-tools cron -y
-apt-get remove --purge nginx nginx-full nginx-common
+apt-get remove --purge nginx nginx-full nginx-common -y
 
 #bbr
 sed -i '/net.core.default_qdisc/d' /etc/sysctl.conf
@@ -68,7 +68,7 @@ service sshd restart
 #LNMP一键
 v2_nginx(){
 
-apt-get remove --purge nginx nginx-full nginx-common
+apt-get remove --purge nginx nginx-full nginx-common -y
 apt install -y curl vim wget unzip apt-transport-https lsb-release ca-certificates git gnupg2 netcat socat 
 apt install -y nginx
 
