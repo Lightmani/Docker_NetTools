@@ -1,9 +1,9 @@
+web(){
+read -p " 请输入你的网址:" yoursite
+}
+
 #初始环境
 environment(){
-
-read -p " 请输入你的网址:" yoursite
-
-
 apt update 
 apt upgrade -y
 apt install vim curl wget unzip rng-tools cron -y
@@ -145,6 +145,7 @@ case "$menu_Num" in
 	environment
 	;;
 	2)
+	web
 	v2_nginx
 	;;
 	3)
@@ -154,6 +155,7 @@ case "$menu_Num" in
 	firewall
 	;;
 	5)
+	web
 	environment
     v2_nginx
     ;;
