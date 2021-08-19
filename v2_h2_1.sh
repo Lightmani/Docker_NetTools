@@ -30,17 +30,20 @@ modify_port_UUID(){
 
     UUID=$(cat /proc/sys/kernel/random/uuid)
     path=$(openssl rand -hex 12)
+    cdnspath=$(openssl rand -hex 8)
 
 
-
+  
     sed -i "/\"id\"/c \\\t  \"id\":\"${UUID}\"," /etc/v2ray/config.json
 sed -i "/\"password\"/c \\\t  \"password\":\"${UUID}\"," /etc/v2ray/config.json
 
 sed -i "s/SeuW56Es/$path/g" /etc/v2ray/config.json
 sed -i "s/dasdczxyrtgm345xa2/$yoursite/g" /etc/v2ray/config.json
+sed -i "s/dawe321gzc/$cdnspath/g" /etc/v2ray/config.json
 
 sed -i "s/dasdczxyrtgm345xa2/$yoursite/g" /etc/caddy/Caddyfile
 sed -i "s/SeuW56Es/$path/g" /etc/caddy/Caddyfile
+sed -i "s/dawe321gzc/$cdnspath/g" /etc/caddy/Caddyfile
 
 
 }
@@ -92,7 +95,7 @@ unzip dev.zip -d /var/www/site/
 
 cd /etc/caddy/
 rm -f Caddyfile
-wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/Caddy -cO Caddyfile
+wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/Caddy2 -cO Caddyfile
 
 
 }
@@ -119,8 +122,8 @@ service caddy restart
 echo "*******************************************************************"
 
 echo -e "${Red} 用户id（UUID）：${Font} ${UUID}"
-echo -e "${Red} H2&WS传输Path ：${Font} ${path}"
-
+echo -e "${Red} H2传输Path ：${Font} ${path}"
+echo -e "${Red} WS传输Path ：${Font} ${cdnspath}"
 }
 
 update(){
