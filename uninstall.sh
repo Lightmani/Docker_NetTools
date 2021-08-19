@@ -3,7 +3,8 @@ apt remove nginx -y
 apt autoremove -y
 systemctl disable nginx
 rm -rf /etc/nginx
-
+apt remove caddy -y
+rm -rf /etc/caddy/
 acme.sh --uninstall
 
 docker stop v2ray
