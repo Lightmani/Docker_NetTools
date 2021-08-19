@@ -78,8 +78,6 @@ curl  https://get.acme.sh | sh
 
 
 
-apt install -y nginx
-
 systemctl enable nginx
 
 mkdir /var/www
