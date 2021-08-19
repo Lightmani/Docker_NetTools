@@ -38,10 +38,11 @@ sed -i "/\"password\"/c \\\t  \"password\":\"${UUID}\"," /etc/v2ray/config.json
 
 sed -i "s/SeuW56Es/$path/g" /etc/v2ray/config.json
 sed -i "s/dasdczxyrtgm345xa2/$yoursite/g" /etc/v2ray/config.json
+sed -i "s/f435hdcz78fs/$cdnsite/g" /etc/v2ray/config.json
 
 sed -i "s/dasdczxyrtgm345xa2/$yoursite/g" /etc/caddy/Caddyfile
 sed -i "s/SeuW56Es/$path/g" /etc/caddy/Caddyfile
-
+sed -i "s/f435hdcz78fs/$cdnsite/g" /etc/caddy/Caddyfile
 
 }
 
@@ -101,10 +102,11 @@ v2(){
 #V2ray
 service caddy stop
 mkdir /etc/v2ray
-curl  https://get.acme.sh | sh
-~/.acme.sh/acme.sh --register-account -m jsaafsdafa321352xcz@gmail1.com
-~/.acme.sh/acme.sh --issue -d $cdnsite --standalone -k ec-256
-~/.acme.sh/acme.sh --installcert -d $cdnsite --fullchainpath /etc/v2ray/v2ray.crt --keypath /etc/v2ray/v2ray.key --ecc
+
+#curl  https://get.acme.sh | sh
+#~/.acme.sh/acme.sh --register-account -m jsaafsdafa321352xcz@gmail1.com
+#~/.acme.sh/acme.sh --issue -d $cdnsite --standalone -k ec-256
+#~/.acme.sh/acme.sh --installcert -d $cdnsite --fullchainpath /etc/v2ray/v2ray.crt --keypath /etc/v2ray/v2ray.key --ecc
 
 
 
