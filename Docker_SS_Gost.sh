@@ -42,9 +42,6 @@ pass0=$(cat /proc/sys/kernel/random/uuid)
 read -p " 请输入你的Password，默认是$pass0" pass
 [ -z "$pass" ] && pass=$pass0
  
-    
-pass=$(cat /proc/sys/kernel/random/uuid)
-
 mkdir /etc/ss-$name
 cd /etc/ss-$name
 cat>config.json<<EOF
