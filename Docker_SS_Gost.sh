@@ -38,6 +38,11 @@ ss(){
 read -p " 请输入你的端口:" port
 read -p " 请输入你的DNS:" dns
 read -p " 请输入你的Docker's Name:" name
+pass0=$(cat /proc/sys/kernel/random/uuid)
+read -p " 请输入你的Password，默认是$pass0" pass
+[ -z "$pass" ] && pass=$pass0
+ 
+    
 pass=$(cat /proc/sys/kernel/random/uuid)
 
 mkdir /etc/ss-$name
