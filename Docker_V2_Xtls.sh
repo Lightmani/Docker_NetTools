@@ -105,6 +105,11 @@ curl  https://get.acme.sh | sh
 chmod 755 /etc/v2ray/*
 cat /etc/v2ray/v2ray.crt /etc/v2ray/v2ray.key > /etc/v2ray/v2ray.pem
 
+apt install haproxy -y
+rm /etc/haproxy/haproxy.cfg
+wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/haproxy.conf  -cO /etc/haproxy/haproxy.cfg
+systemctl restart haproxy
+systemctl enable haproxy
 
 cd /etc/v2ray
 rm config.json
