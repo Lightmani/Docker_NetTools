@@ -1,0 +1,200 @@
+{
+    "log": {
+        "loglevel": "none"
+    },
+  "dns": {
+    "servers": [
+    "1.1.1.1",
+      {
+        "address": "1.1.1.1", // ??? DNS ????? IP
+        "port": 53,
+        "domains": [
+          "geosite:netflix" 
+        ]
+      },
+      {
+        "address": "1.1.1.1", // ??? DNS ????? IP
+        "port": 53,
+        "domains": [
+          "geosite:google",
+          "geosite:youtube"
+        ]
+      },
+{
+        "address": "1.1.1.1", // ??? DNS ????? IP
+        "port": 53,
+        "domains": [
+          "geosite:hulu", 
+"geosite:hbo" 
+        ]
+      }
+    ]
+  },
+    "inbounds": [
+       {
+      "listen": "0.0.0.0",
+      "port": 443,
+    "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "6f9ae980-d554-4629-805f-806050a5e8a3",
+                        "level": 0,
+                        "email": "love@v2fly.org"
+                    }
+                ],
+                "decryption": "none",
+               "fallbacks": [
+                     {
+                        "dest": 80
+                  }
+                ]
+      },
+      "streamSettings": {
+        "network": "tcp",
+       "security": "tls",
+          "tlsSettings": {
+           "alpn": [
+                        "http/1.1"
+                    ],     
+          "serverName": "xxx",
+          "disableSystemRoot": true,
+                    "certificates": [
+                        {
+                            "certificateFile": "C:/Users/Administrator/Downloads/win-acme.v2.1.20.1185.x64.pluggable/V2ray/xxx-crt.pem", 
+                            "keyFile": "C:/Users/Administrator/Downloads/win-acme.v2.1.20.1185.x64.pluggable/V2ray/xxx-key.pem"
+                        }
+                    ]
+                }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls"
+        ]
+      }
+    },
+         {
+      "listen": "0.0.0.0",
+      "port": 2096,
+    "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "6f9ae980-d554-4629-805f-806050a5e8a3",
+                        "level": 0,
+                        "email": "love@v2fly.org"
+                    }
+                ],
+                "decryption": "none",
+               "fallbacks": [
+                     {
+                        "dest": 80
+                  }
+                ]
+      },
+      "streamSettings": {
+        "network": "tcp",
+       "security": "tls",
+          "tlsSettings": {
+           "alpn": [
+                        "http/1.1"
+                    ],     
+          "serverName": "xxx",
+          "disableSystemRoot": true,
+                    "certificates": [
+                        {
+                            "certificateFile": "C:/Users/Administrator/Downloads/win-acme.v2.1.20.1185.x64.pluggable/V2ray/xxx-crt.pem", 
+                            "keyFile": "C:/Users/Administrator/Downloads/win-acme.v2.1.20.1185.x64.pluggable/V2ray/xxx-key.pem"
+                        }
+                    ]
+                }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls"
+        ]
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 28888,
+    "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "6f9ae980-d554-4629-805f-806050a5e8a3",
+                        "level": 0,
+                        "email": "love@v2fly.org"
+                    }
+                ],
+                "decryption": "none"
+         
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "none",
+          "tlsSettings": {
+                    "certificates": [
+                        {
+                            "certificateFile": "C:/Users/Administrator/Downloads/win-acme.v2.1.20.1185.x64.pluggable/V2ray/xxx-crt.pem", 
+                            "keyFile": "C:/Users/Administrator/Downloads/win-acme.v2.1.20.1185.x64.pluggable/V2ray/xxx-key.pem"
+                        }
+                    ]
+                },
+        "wsSettings": {
+          "path": "/speedtest",
+             "headers": {
+        "Host": "xxx"
+    }
+        }
+      }
+    },
+    {
+ "tag": "nf",
+ "protocol": "shadowsocks",
+ "address": "0.0.0.0",
+            "port": 55555,
+"settings": {
+
+            "method": "chacha20-ietf-poly1305",
+            "password": "6f9ae980-d554-4629-805f-806050a5e8a3",
+"network": "tcp,udp",
+            "level": 0
+
+}
+}
+    ],
+    "outbounds": [
+        {
+            "protocol": "freedom",
+            "settings": {
+          "domainStrategy": "UseIPv4"
+            }
+        },
+ {
+"tag": "nf",
+ "protocol": "freedom",
+       "settings": {
+          "domainStrategy": "UseIPv4"
+            }
+    }
+    ],
+"routing": {
+    "rules": [
+         {
+"type": "field",
+"domain": [
+"geosite:google"
+],
+"outboundTag": "nf"
+}
+    ],
+    "strategy": "rules"
+  }
+}
+
+
