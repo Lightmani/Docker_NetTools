@@ -112,10 +112,6 @@ systemctl daemon-reload
 
 echo "HRNGDEVICE=/dev/urandom">>/etc/default/rng-tools
 
-wget -qO- get.docker.com | bash
-systemctl enable docker
-systemctl start docker
-
 }
 
 modify_port_UUID(){
@@ -211,8 +207,10 @@ rm config.json
 *****************************************
 wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/V2_XTLS.config  -cO config.json
 modify_port_UUID
-docker pull teddysun/v2ray
-docker run -d --name v2ray --restart always --net host -v /etc/v2ray:/etc/v2ray teddysun/v2ray
+bash <(curl -L https://raw.githubusercontent.com/v2fly/fhs-install-v2ray/master/install-release.sh)
+rm /usr/local/etc/v2ray/config.json
+ln -s /etc/v2ray/config.json /usr/local/etc/v2ray/config.json
+service v2ray restart
 
 service nginx restart
 
@@ -226,10 +224,7 @@ echo -e "${Red} 用户id（UUID）：${Font} ${UUID}"
 
 update(){
 
-docker pull teddysun/v2ray
-docker stop v2ray
-docker rm v2ray
-docker run -d --name v2ray --restart always --net host -v /etc/v2ray:/etc/v2ray teddysun/v2ray
+bash <(curl -L https://raw.githubusercontent.com/v2fly/fhs-install-v2ray/master/install-release.sh)
 
 
 }
