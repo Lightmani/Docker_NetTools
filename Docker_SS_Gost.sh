@@ -3,7 +3,7 @@
 env(){
 
 apt update 
-apt upgrade -y
+#apt upgrade -y
 apt install vim ufw curl wget unzip rng-tools -y
 #bbr
 
@@ -16,15 +16,6 @@ sysctl -p >/dev/null 2>&1
 pass=$(cat /proc/sys/kernel/random/uuid)
 
 
-apt install ufw -y
-ufw default allow
-ufw default deny
-ufw allow 8443
-ufw allow 443
-ufw allow 80
-ufw allow 22
-systemctl enable ufw
-systemctl start ufw
 
 #Docker
 wget -qO- get.docker.com | bash
@@ -72,25 +63,15 @@ echo 您的SS密码是$pass
 
 gost(){
 #gost
-docker pull ginuerzh/gost
-mkdir /etc/gost
-cd /etc/gost
-cat>config.json<<EOF
-{
-    "Debug": false,
-    "Retries": 2,
-    "ServeNodes": [
-        "relay+mws://:80/127.0.0.1:55555"
-    ]
-}
-EOF
-docker run -d --net host --restart always --name gost -v /etc/gost:/etc/gost ginuerzh/gost -C /etc/gost/config.json
+bash <(curl -Ls https://sh.nekoneko.cloud/land.sh)
+neko-relay -g init
+neko-relay -g add
 }
 
 
 echo -e "1.Environment"
 echo -e "2.Add SS"
-echo -e "3.Add Gost"
+echo -e "3.Add MIX"
 echo -e "4.ALL"
 read -p "Press:" menu_Num
 case "$menu_Num" in
