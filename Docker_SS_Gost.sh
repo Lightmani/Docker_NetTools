@@ -71,7 +71,7 @@ neko-relay -g add
 
 echo -e "1.Environment"
 echo -e "2.Add SS"
-echo -e "3.Add MIX"
+echo -e "3.ENV+SS"
 echo -e "4.ALL"
 read -p "Press:" menu_Num
 case "$menu_Num" in
