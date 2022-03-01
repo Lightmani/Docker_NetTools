@@ -82,7 +82,8 @@ case "$menu_Num" in
 	ss
 	;;
 	3)
-	gost
+	env
+	ss
 	;;
 	4)
 	env
