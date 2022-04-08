@@ -211,7 +211,7 @@ bash <(curl -L https://raw.githubusercontent.com/v2fly/fhs-install-v2ray/master/
 rm /usr/local/etc/v2ray/config.json
 ln -s /etc/v2ray/config.json /usr/local/etc/v2ray/config.json
 service v2ray restart
-
+systemctl enable v2ray
 service nginx restart
 
 
