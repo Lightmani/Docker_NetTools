@@ -190,6 +190,7 @@ service nginx stop
 mkdir /etc/v2ray
 
 curl  https://get.acme.sh | sh
+~/.acme.sh/acme.sh --set-default-ca --server letsencrypt
 ~/.acme.sh/acme.sh --register-account -m jsaafsdafa321352xcz@gmail1.com
 ~/.acme.sh/acme.sh --issue -d $yoursite --standalone -k ec-256
 ~/.acme.sh/acme.sh --installcert -d $yoursite --fullchainpath /etc/v2ray/v2ray.crt --keypath /etc/v2ray/v2ray.key --ecc
