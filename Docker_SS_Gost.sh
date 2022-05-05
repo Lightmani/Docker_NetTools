@@ -61,10 +61,6 @@ echo 您的SS端口是$port
 echo 您的SS密码是$pass
 }
 
-gost(){
-#gost
-
-}
 
 
 echo -e "1.Environment"
@@ -86,7 +82,6 @@ case "$menu_Num" in
 	4)
 	env
     ss
-    gost
 	;;
 	*)
 	echo "Enter Right[1-5]:"
