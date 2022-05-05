@@ -63,9 +63,7 @@ echo 您的SS密码是$pass
 
 gost(){
 #gost
-bash <(curl -Ls https://sh.nekoneko.cloud/land.sh)
-neko-relay -g init
-neko-relay -g add
+
 }
 
 
