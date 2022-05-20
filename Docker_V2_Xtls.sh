@@ -215,8 +215,9 @@ service nginx restart
 wget --no-check-certificate -O /opt/update.sh  https://github.com/Lightmani/Docker_NetTools/raw/master/update.sh
 (echo "59 23 * * * bash /opt/update.sh >> /dev/null 2>&1" ; crontab -l ) | crontab
 
+clear
 echo "*******************************************************************"
-
+echo -e "${Red} 用户域名：${Font} ${yoursite}"
 echo -e "${Red} 用户id（UUID）：${Font} ${UUID}"
 
 }
