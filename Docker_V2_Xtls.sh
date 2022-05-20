@@ -164,10 +164,6 @@ apt install -y curl vim wget unzip apt-transport-https lsb-release ca-certificat
 apt install -y nginx
 
 
-(echo "59 23 * * * service nginx stop >> /dev/null 2>&1" ; crontab -l ) | crontab
-(echo "1 1 * * * service nginx start >> /dev/null 2>&1" ; crontab -l ) | crontab
-
-
 
 
 systemctl enable nginx
@@ -215,7 +211,9 @@ service v2ray restart
 systemctl enable v2ray
 service nginx restart
 
-
+#Update Certify
+wget --no-check-certificate -O /opt/update.sh  https://github.com/Lightmani/Docker_NetTools/raw/master/update.sh
+(echo "59 23 * * * bash /opt/update.sh >> /dev/null 2>&1" ; crontab -l ) | crontab
 
 echo "*******************************************************************"
 
