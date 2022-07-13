@@ -5,6 +5,11 @@
 wget https://raw.githubusercontent.com/cokemine/ServerStatus-Hotaru/master/status.sh && bash status.sh c
 
 
+下载Hysteria配置
+wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/hy.conf
+
+
+
 使用Docker简单配置加密通讯程序
 
 ###################################################################
