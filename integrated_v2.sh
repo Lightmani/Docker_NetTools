@@ -202,6 +202,7 @@ curl  https://get.acme.sh | sh
 
 chmod 755 /etc/v2ray/*
 cat /etc/v2ray/v2ray.crt /etc/v2ray/v2ray.key > /etc/v2ray/v2ray.pem
+chmod 755 /etc/v2ray/*
 
 apt install haproxy -y
 rm /etc/haproxy/haproxy.cfg
