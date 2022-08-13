@@ -231,8 +231,8 @@ clear
 echo "*******************************************************************"
 echo -e "${Red} 用户域名：${Font} ${yoursite}"
 echo -e "${Red} 用户id（UUID）：${Font} ${UUID}"
-echo -e "${Red} H2传输Path ：${Font} ${path}"
-echo -e "${Red} GRPC传输Path ：${Font} ${cdnspath}"
+echo -e "${Red} H2传输Path ：/speedtest"
+echo -e "${Red} GRPC传输Path ：/speedtest1"
 
 }
 
