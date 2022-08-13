@@ -225,6 +225,7 @@ ln -s /etc/v2ray/config.json /usr/local/etc/v2ray/config.json
 service v2ray restart
 systemctl enable v2ray
 service nginx restart
+apt autoremove -y
 
 #Update Certify
 wget --no-check-certificate -O /opt/update.sh  https://github.com/Lightmani/Docker_NetTools/raw/master/update.sh
