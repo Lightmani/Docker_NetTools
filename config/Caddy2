@@ -8,31 +8,33 @@
 }
 
 :443, :2096, dasdczxyrtgm345xa2 {
-	 tls {
-        protocols tls1.2 tls1.3
-        ciphers TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256
-        curves x25519
-    }
-    
-#WSConfig
- reverse_proxy /SeuW56Es 127.0.0.1:18888 {
-		flush_interval -1
+	tls [/etc/v2ray/v2ray.pem /etc/v2ray/v2ray.key] {
+		ciphers TLS_AES_256_GCM_SHA384 TLS_AES_128_GCM_SHA256 TLS_CHACHA20_POLY1305_SHA256 TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256 TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256
+		curves x25519 secp521r1 secp384r1 secp256r1
+		alpn h2 http/1.1
+	}
+	
+	reverse_proxy /speedtest 127.0.0.1:18888 { #与vless+h2c或vmess+h2c应用中path对应，转发给本机vless+h2c或vmess+h2c监听端口。
 		transport http {
-			versions h2c
+			versions h2c 2
 		}
 	}
-  
-  #H2Config
-    @websocket {
-        path /dawe321gzc
-        header Connection *Upgrade*
-        header Upgrade websocket
-    }
-    
-    reverse_proxy @websocket 127.0.0.1:28888
+
+
+	@vgrpc {
+		path /speedtest1/*
+		protocol grpc
+	}
+	reverse_proxy @vgrpc 127.0.0.1:28888 {
+		transport http {
+			versions h2c 2
+		}
+		flush_interval -1
+		header_up X-Real-IP {remote_host}
+	}
 
 	@host {
-		host dasdczxyrtgm345xa2 
+		host dasdczxyrtgm345xa2
 	}
 	route @host {
 		header {
