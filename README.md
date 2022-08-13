@@ -1,4 +1,4 @@
-整合包，H2 Grpc TCP
+基于Caddy的整合包，H2 Grpc TCP
 
 
 apt install wget -y && wget --no-check-certificate -O /opt/v2.sh https://github.com/Lightmani/Docker_NetTools/raw/master/integrated_v2.sh && chmod 755 /opt/v2.sh && bash /opt/v2.sh
