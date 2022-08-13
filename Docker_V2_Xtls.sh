@@ -163,6 +163,19 @@ v2_nginx(){
 
 apt-get remove --purge nginx nginx-full nginx-common -y
 apt install -y curl vim wget unzip apt-transport-https lsb-release ca-certificates git gnupg2 netcat socat 
+
+release=$(lsb_release -cs)
+cat <<EOF > etc/apt/sources.list.d/nginx.list
+
+deb https://nginx.org/packages/ubuntu/ $release nginx
+
+deb-src https://nginx.org/packages/ubuntu/ $release nginx
+
+EOF
+
+apt-key adv --recv-key --keyserver keyserver.ubuntu.com ABF5BD827BD9BF62
+apt update -y
+
 apt install -y nginx
 
 
