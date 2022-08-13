@@ -164,16 +164,14 @@ v2_nginx(){
 apt-get remove --purge nginx nginx-full nginx-common -y
 apt install -y curl vim wget unzip apt-transport-https lsb-release ca-certificates git gnupg2 netcat socat 
 
-release=$(lsb_release -cs)
-cat <<EOF > etc/apt/sources.list.d/nginx.list
-
-deb https://nginx.org/packages/ubuntu/ $release nginx
-
-deb-src https://nginx.org/packages/ubuntu/ $release nginx
-
-EOF
-
-apt-key adv --recv-key --keyserver keyserver.ubuntu.com ABF5BD827BD9BF62
+apt install curl gnupg2 ca-certificates lsb-release ubuntu-keyring
+curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \
+    | sudo tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
+echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \
+http://nginx.org/packages/mainline/ubuntu `lsb_release -cs` nginx" \
+    | sudo tee /etc/apt/sources.list.d/nginx.list
+echo -e "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n" \
+    | sudo tee /etc/apt/preferences.d/99nginx
 apt update -y
 
 apt install -y nginx
