@@ -1,3 +1,9 @@
+整合包，H2 Grpc TCP
+
+
+apt install wget -y && wget --no-check-certificate -O /opt/v2.sh https://github.com/Lightmani/Docker_NetTools/raw/master/integrated_v2.sh && chmod 755 /opt/v2.sh && bash /opt/v2.sh
+
+
 # Docker_NetTools
 
 安装探针
@@ -20,7 +26,7 @@ wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/hy.conf
 0、
 Vmess+H2+WS(多域名)
 
-apt install wget -y && wget --no-check-certificate -O /opt/v2.sh https://github.com/Lightmani/Docker_NetTools/raw/master/v2_h2.sh && chmod 755 /opt/v2.sh && bash /opt/v2.sh
+apt install wget -y && wget --no-check-certificate -O /opt/v2.sh https://github.com/Lightmani/Docker_NetTools/raw/master/integrated_v2.sh && chmod 755 /opt/v2.sh && bash /opt/v2.sh
 
 
 0.1、Vmess+H2+WS(单域名)
