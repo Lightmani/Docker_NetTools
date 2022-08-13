@@ -127,8 +127,8 @@ modify_port_UUID(){
 sed -i "/\"password\"/c \\\t  \"password\":\"${UUID}\"," /etc/v2ray/config.json
 sed -i "s/dasdczxyrtgm345xa2/$yoursite/g" /etc/v2ray/config.json
 
-sed -i "/server_name/c \\\t  server_name $yoursite;" /etc/nginx/sites-enabled/site.conf
-sed -i "/http_host = \"\"/c \\\t  \$http_host = \"$yoursite\"" /etc/nginx/sites-enabled/site.conf
+sed -i "/server_name/c \\\t  server_name $yoursite;" /etc/nginx/conf.d/site.conf
+sed -i "/http_host = \"\"/c \\\t  \$http_host = \"$yoursite\"" /etc/nginx/conf.d/site.conf
 }
 
 #Firewall
