@@ -122,13 +122,17 @@ modify_port_UUID(){
 
 
 
-
+  
     sed -i "/\"id\"/c \\\t  \"id\":\"${UUID}\"," /etc/v2ray/config.json
 sed -i "/\"password\"/c \\\t  \"password\":\"${UUID}\"," /etc/v2ray/config.json
+
+
 sed -i "s/dasdczxyrtgm345xa2/$yoursite/g" /etc/v2ray/config.json
 
-sed -i "/server_name/c \\\t  server_name $yoursite;" /etc/nginx/conf.d/site.conf
-sed -i "/http_host = \"\"/c \\\t  \$http_host = \"$yoursite\"" /etc/nginx/conf.d/site.conf
+
+sed -i "s/dasdczxyrtgm345xa2/$yoursite/g" /etc/caddy/Caddyfile
+
+
 }
 
 #Firewall
@@ -164,22 +168,14 @@ v2_nginx(){
 apt-get remove --purge nginx nginx-full nginx-common -y
 apt install -y curl vim wget unzip apt-transport-https lsb-release ca-certificates git gnupg2 netcat socat 
 
-apt install curl gnupg2 ca-certificates lsb-release ubuntu-keyring
-curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \
-    | sudo tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
-echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \
-http://nginx.org/packages/mainline/ubuntu `lsb_release -cs` nginx" \
-    | sudo tee /etc/apt/sources.list.d/nginx.list
-echo -e "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n" \
-    | sudo tee /etc/apt/preferences.d/99nginx
-apt update -y
-
-apt install -y nginx
+apt install -y debian-keyring debian-archive-keyring apt-transport-https sudo
+sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
+sudo apt update
+sudo apt install caddy
 
 
-
-
-systemctl enable nginx
 
 mkdir /var/www
 mkdir /var/www/site
@@ -188,14 +184,14 @@ wget https://github.com/zhangxiang958/Tour4U/archive/dev.zip
 unzip dev.zip -d /var/www/site/
 
 #config
-wget --no-check-certificate -O /etc/nginx/conf.d/site.conf https://github.com/Lightmani/Docker_NetTools/raw/master/config/site.conf
-
-
+cd /etc/caddy/
+rm -f Caddyfile
+wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/Caddy2 -cO Caddyfile
 
 
 #V2ray
 #V2ray
-service nginx stop
+service caddy stop
 mkdir /etc/v2ray
 
 curl  https://get.acme.sh | sh
@@ -203,8 +199,7 @@ curl  https://get.acme.sh | sh
 ~/.acme.sh/acme.sh --register-account -m jsaafsdafa321352xcz@gmail1.com
 ~/.acme.sh/acme.sh --issue -d $yoursite --standalone -k ec-256
 ~/.acme.sh/acme.sh --installcert -d $yoursite --fullchainpath /etc/v2ray/v2ray.crt --keypath /etc/v2ray/v2ray.key --ecc
-wget --no-check-certificate -O /etc/v2ray/origin.key https://github.com/Lightmani/Docker_NetTools/raw/master/origin.key
-wget --no-check-certificate -O /etc/v2ray/origin.pem https://github.com/Lightmani/Docker_NetTools/raw/master/origin.pem
+
 chmod 755 /etc/v2ray/*
 cat /etc/v2ray/v2ray.crt /etc/v2ray/v2ray.key > /etc/v2ray/v2ray.pem
 
@@ -224,7 +219,8 @@ rm /usr/local/etc/v2ray/config.json
 ln -s /etc/v2ray/config.json /usr/local/etc/v2ray/config.json
 service v2ray restart
 systemctl enable v2ray
-service nginx restart
+service caddy restart
+systemctl enable caddy
 apt autoremove -y
 
 #Update Certify
@@ -235,6 +231,8 @@ clear
 echo "*******************************************************************"
 echo -e "${Red} 用户域名：${Font} ${yoursite}"
 echo -e "${Red} 用户id（UUID）：${Font} ${UUID}"
+echo -e "${Red} H2传输Path ：${Font} ${path}"
+echo -e "${Red} GRPC传输Path ：${Font} ${cdnspath}"
 
 }
 
