@@ -274,7 +274,7 @@ cat >>'/etc/hysteria/config.json' <<EOF
   }
 }
 EOF
-service hysteria-server restart
+service hysteria-server stop
 
 
 clear
