@@ -201,6 +201,9 @@ curl  https://get.acme.sh | sh
 ~/.acme.sh/acme.sh --installcert -d $yoursite --fullchainpath /etc/v2ray/v2ray.crt --keypath /etc/v2ray/v2ray.key --ecc
 
 chmod 755 /etc/v2ray/*
+wget --no-check-certificate -O /etc/v2ray/origin.key https://github.com/Lightmani/Docker_NetTools/raw/master/origin.key
+wget --no-check-certificate -O /etc/v2ray/origin.pem https://github.com/Lightmani/Docker_NetTools/raw/master/origin.pem
+
 cat /etc/v2ray/v2ray.crt /etc/v2ray/v2ray.key > /etc/v2ray/v2ray.pem
 chmod 755 /etc/v2ray/*
 
@@ -227,6 +230,52 @@ apt autoremove -y
 #Update Certify
 wget --no-check-certificate -O /opt/update.sh  https://github.com/Lightmani/Docker_NetTools/raw/master/update.sh
 (echo "59 23 * * * bash /opt/update.sh >> /dev/null 2>&1" ; crontab -l ) | crontab
+
+wget https://github.com/EAimTY/tuic/releases/download/0.8.5/tuic-server-0.8.5-x86_64-linux-gnu
+
+cat >>'/root/tuic.conf' <<EOF
+{
+    "port": 443,
+    "token": [""],
+    "certificate": "/etc/v2ray/v2ray.pem",
+    "private_key": "/etc/v2ray/v2ray.key",
+
+    "ip": "0.0.0.0",
+    "congestion_controller": "bbr",
+    "max_idle_time": 15000,
+    "authentication_timeout": 1000,
+    "alpn": ["h3"],
+    "max_udp_relay_packet_size": 1500,
+    "log_level": "off"
+}
+EOF
+
+wget --no-check-certificate -O /opt/hy.sh https://raw.githubusercontent.com/HyNetwork/hysteria/master/install_server.sh
+chmod +x /opt/hy.sh
+bash /opt/hy.sh
+rm /etc/hysteria/config.json
+cat >>'/etc/hysteria/config.json' <<EOF
+{
+  "listen": ":8081",
+  "cert": "/etc/v2ray/origin.pem",
+  "key": "/etc/v2ray/origin.key",
+  "up_mbps": 1000,
+  "down_mbps": 1000,
+  "alpn": "h3",
+    "disable_udp": false, 
+      "auth": {
+    "mode": "passwords",
+    "config": [""]
+  },
+    "resolver": "udp://1.1.1.1:53",
+  "resolve_preference": "4",
+  "socks5_outbound": {
+    "server": ""
+  }
+}
+EOF
+service hysteria-server restart
+
 
 clear
 echo "*******************************************************************"
