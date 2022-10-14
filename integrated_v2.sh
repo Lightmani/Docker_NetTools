@@ -102,16 +102,17 @@ echo "HRNGDEVICE=/dev/urandom">>/etc/default/rng-tools
 
 modify_port_UUID(){
 
-    UUID=$(cat /proc/sys/kernel/random/uuid)
-
+UUID=$(cat /proc/sys/kernel/random/uuid)
+sspass=$(openssl rand -base64 32)
 
 
   
     sed -i "/\"id\"/c \\\t  \"id\":\"${UUID}\"," /etc/v2ray/config.json
-sed -i "/\"password\"/c \\\t  \"password\":\"${UUID}\"," /etc/v2ray/config.json
+sed -i "/\"password\"/c \\\t  \"password\":\"${sspass}\"," /etc/v2ray/config.json
 
 
 sed -i "s/dasdczxyrtgm345xa2/$yoursite/g" /etc/v2ray/config.json
+
 
 
 sed -i "s/dasdczxyrtgm345xa2/$yoursite/g" /etc/caddy/Caddyfile
@@ -203,11 +204,11 @@ rm config.json
 *****************************************
 wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/V2_XTLS.config  -cO config.json
 modify_port_UUID
-bash <(curl -L https://raw.githubusercontent.com/v2fly/fhs-install-v2ray/master/install-release.sh)
-rm /usr/local/etc/v2ray/config.json
-ln -s /etc/v2ray/config.json /usr/local/etc/v2ray/config.json
-service v2ray restart
-systemctl enable v2ray
+bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install
+rm /usr/local/etc/xray/config.json
+ln -s /etc/v2ray/config.json /usr/local/etc/xray/config.json
+service xray restart
+systemctl enable xray
 service caddy restart
 systemctl enable caddy
 apt autoremove -y
@@ -266,9 +267,9 @@ clear
 echo "*******************************************************************"
 echo -e "${Red} 用户域名：${Font} ${yoursite}"
 echo -e "${Red} 用户id（UUID）：${Font} ${UUID}"
+echo -e "${Red} ss密码是${sspass}"
 echo -e "${Red} H2传输Path ：/speedtest"
 echo -e "${Red} GRPC传输Path ：/speedtest1"
-echo -e "Fake Host ：origin-a.akamaihd.net"
 }
 
 update(){
