@@ -204,7 +204,7 @@ rm config.json
 *****************************************
 wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/V2_XTLS.config  -cO config.json
 modify_port_UUID
-bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install --version 1.6.5
+bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install --version 1.7.5
 rm /usr/local/etc/xray/config.json
 ln -s /etc/v2ray/config.json /usr/local/etc/xray/config.json
 service xray restart
