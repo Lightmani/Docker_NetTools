@@ -21,17 +21,12 @@
 	}
 
 
-	@vgrpc {
-		path /speedtest1/*
-		protocol grpc
-	}
-	reverse_proxy @vgrpc 127.0.0.1:28888 {
-		transport http {
-			versions h2c 2
-		}
-		flush_interval -1
-		header_up X-Real-IP {remote_host}
-	}
+   @websockets {
+      path /speedtest1
+      header Connection Upgrade
+      header Upgrade websocket
+    }
+reverse_proxy @websockets 127.0.0.1:28888
 
 	@host {
 		host dasdczxyrtgm345xa2
