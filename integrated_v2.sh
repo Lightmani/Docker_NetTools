@@ -10,10 +10,6 @@ apt install vim curl wget unzip rng-tools cron -y
 apt-get remove --purge nginx nginx-full nginx-common -y
 
 #bbr
-
-sed -i '/net.core.default_qdisc/d' /etc/sysctl.conf
-sed -i '/net.ipv4.tcp_congestion_control/d' /etc/sysctl.conf
-sed -i '/net.ipv4.tcp_no_metrics_save/d' /etc/sysctl.conf
 sed -i '/net.ipv4.tcp_no_metrics_save/d' /etc/sysctl.conf
 sed -i '/net.ipv4.tcp_ecn/d' /etc/sysctl.conf
 sed -i '/net.ipv4.tcp_frto/d' /etc/sysctl.conf
@@ -30,10 +26,39 @@ sed -i '/net.core.rmem_max/d' /etc/sysctl.conf
 sed -i '/net.core.wmem_max/d' /etc/sysctl.conf
 sed -i '/net.ipv4.udp_rmem_min/d' /etc/sysctl.conf
 sed -i '/net.ipv4.udp_wmem_min/d' /etc/sysctl.conf
-
+sed -i '/net.core.default_qdisc/d' /etc/sysctl.conf
+sed -i '/net.ipv4.tcp_congestion_control/d' /etc/sysctl.conf
 cat >> /etc/sysctl.conf << EOF
+net.ipv4.tcp_no_metrics_save=1
+net.ipv4.tcp_ecn=0
+net.ipv4.tcp_frto=0
+net.ipv4.tcp_mtu_probing=0
+net.ipv4.tcp_rfc1337=0
+net.ipv4.tcp_sack=1
+net.ipv4.tcp_fack=1
+net.ipv4.tcp_window_scaling=1
+net.ipv4.tcp_adv_win_scale=1
+net.ipv4.tcp_moderate_rcvbuf=1
+net.core.rmem_max=33554432
+net.core.wmem_max=33554432
+net.ipv4.tcp_rmem=4096 87380 33554432
+net.ipv4.tcp_wmem=4096 16384 33554432
+net.ipv4.udp_rmem_min=8192
+net.ipv4.udp_wmem_min=8192
 net.core.default_qdisc=fq
 net.ipv4.tcp_congestion_control=bbr
+EOF
+sysctl -p && sysctl --system
+
+sed -i '/net.ipv4.conf.all.route_localnet/d' /etc/sysctl.conf
+sed -i '/net.ipv4.ip_forward/d' /etc/sysctl.conf
+sed -i '/net.ipv4.conf.all.forwarding/d' /etc/sysctl.conf
+sed -i '/net.ipv4.conf.default.forwarding/d' /etc/sysctl.conf
+cat >> '/etc/sysctl.conf' << EOF
+net.ipv4.conf.all.route_localnet=1
+net.ipv4.ip_forward=1
+net.ipv4.conf.all.forwarding=1
+net.ipv4.conf.default.forwarding=1
 EOF
 sysctl -p && sysctl --system
 
@@ -93,6 +118,7 @@ DefaultLimitNPROC=65535
 EOF
 
 systemctl daemon-reload
+
 
 
 
