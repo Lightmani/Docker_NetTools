@@ -1,3 +1,8 @@
+新的reality协议
+apt install wget -y && wget --no-check-certificate -O /opt/v2.sh https://github.com/Lightmani/Docker_NetTools/raw/master/v2_reality.sh && chmod 755 /opt/v2.sh && bash /opt/v2.sh
+
+
+
 基于Caddy的整合包，H2 Grpc TCP
 
 
