@@ -5,7 +5,16 @@
   "dns": {
     "servers": [
     "1.1.1.1",
-    "8.8.8.8"
+     {
+        "address": "104.208.87.36",
+        "port": 53,
+        "domains": [
+          "geosite:netflix",
+"geosite:bilibili",
+"myvideo.net.tw"
+        ]
+      }
+
     ]
   },
     "inbounds": [
@@ -64,24 +73,23 @@
          "settings":{
          "domainStrategy": "UseIPv4"
         }},
-        {
-                "protocol": "http",
-                "settings": {
-                "servers": [
-                    {
-                        "address": "prox-nflus.pointtoserver.com",
-                        "port": 10798,
-                        "users": [
-                            {
-                                "user": "666",
-                                "pass": "666"
-                            }
-                        ]
-                    }
-                ]
-            },
-          "tag": "http"
-        },
+       {
+  "protocol": "wireguard",
+  "settings": {
+    "secretKey": "",
+        "address": [
+      "10.14.0.2/32"
+    ],
+    "peers": [
+      {
+        "publicKey": "P0vaGUOUE7V5bbGOYY2WgQeZnTZEHvIr+dfebU7W4Ao=",
+        "endpoint": "45.144.227.48:51820"
+      }
+    ]
+  },
+  "tag": "tw"
+},
+
 {
 "tag": "stream",
 "protocol": "freedom",
@@ -103,13 +111,14 @@
     ],
 "routing": {
     "rules": [
-         {
+        {
 "type": "field",
 "domain": [
-"geosite:netflix",
-"geosite:disney"
+"geosite:openai",
+"geosite:iqiyi",
+"hostloc.com"
 ],
-"outboundTag": "stream"
+"outboundTag": "tw"
 },
         {
                 "type": "field",
