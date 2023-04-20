@@ -137,6 +137,7 @@ publickey=$(echo $key | grep "Public key:" | awk  '{print substr($6,1)}')
     sed -i "/\"id\"/c \\\t  \"id\":\"${UUID}\"," /etc/v2ray/config.json
 sed -i "/\"password\"/c \\\t  \"password\":\"${sspass}\"," /etc/v2ray/config.json
 
+sed -i "s/dasdczxyrtgm345xa2/$yoursite/g" /etc/v2ray/config.json
 
 sed -i "s/hfghgrwriyubvccxz/$privatekey/g" /etc/v2ray/config.json
 
