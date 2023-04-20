@@ -27,10 +27,10 @@
                 "security": "reality",
                 "realitySettings": {
                     "show": false,
-                    "dest": "www.dvc.edu:443",
+                    "dest": "dasdczxyrtgm345xa2:443",
                     "xver": 0,
                     "serverNames": [
-                        "www.dvc.edu"
+                        "dasdczxyrtgm345xa2"
                     ],
                     "privateKey": "hfghgrwriyubvccxz",
                     "minClientVer": "1.8.1",
