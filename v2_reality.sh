@@ -195,8 +195,10 @@ cd /etc/v2ray
 rm config.json
 *****************************************
 wget https://raw.githubusercontent.com/Lightmani/Docker_NetTools/master/config/v2_reality.json  -cO config.json
-modify_port_UUID
 bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install --version 1.8.1
+
+modify_port_UUID
+
 rm /usr/local/etc/xray/config.json
 ln -s /etc/v2ray/config.json /usr/local/etc/xray/config.json
 service xray restart
