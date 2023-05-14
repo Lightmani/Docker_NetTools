@@ -6,12 +6,10 @@
     "servers": [
     "1.1.1.1",
      {
-        "address": "104.208.87.36",
+        "address": "1.1.1.1",
         "port": 53,
         "domains": [
-          "geosite:netflix",
-"geosite:bilibili",
-"myvideo.net.tw"
+"geosite:bilibili"
         ]
       }
 
@@ -36,7 +34,7 @@
                 "security": "reality",
                 "realitySettings": {
                     "show": false,
-                    "dest": "dasdczxyrtgm345xa2:443",
+                    "dest": "127.0.0.1:443",
                     "xver": 0,
                     "serverNames": [
                         "dasdczxyrtgm345xa2"
@@ -64,7 +62,32 @@
             "level": 0
 
 }
-}
+},
+  {
+         "listen": "127.0.0.1",
+            "port": 28888,
+            "protocol": "vmess",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "",
+                      "alterId": 0,
+                    "security": "auto"
+                    }
+                ]
+            },
+      "streamSettings": {
+        "network": "ws",
+        "security": "none",
+        "wsSettings": {
+          "path": "/speedtest",
+             "headers": {
+             "Host": "dasdczxyrtgm345xa2"
+    }
+        }
+      }
+    }
+
 
     ],
     "outbounds": [
@@ -73,23 +96,6 @@
          "settings":{
          "domainStrategy": "UseIPv4"
         }},
-       {
-  "protocol": "wireguard",
-  "settings": {
-    "secretKey": "",
-        "address": [
-      "10.14.0.2/32"
-    ],
-    "peers": [
-      {
-        "publicKey": "P0vaGUOUE7V5bbGOYY2WgQeZnTZEHvIr+dfebU7W4Ao=",
-        "endpoint": "45.144.227.48:51820"
-      }
-    ]
-  },
-  "tag": "tw"
-},
-
 {
 "tag": "stream",
 "protocol": "freedom",
@@ -114,11 +120,17 @@
         {
 "type": "field",
 "domain": [
+"geosite:netflix",
+"geosite:disney",
+"geosite:hbo",
+"geosite:hulu",
+"domain:myvideo.net.tw",
+"domain:crunchyroll.com",
 "geosite:openai",
 "geosite:iqiyi",
 "hostloc.com"
 ],
-"outboundTag": "tw"
+"outboundTag": "stream"
 },
         {
                 "type": "field",
