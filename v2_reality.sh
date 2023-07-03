@@ -12,6 +12,14 @@ apt-get remove --purge nginx nginx-full nginx-common -y
 #bbr
 cat > /etc/sysctl.conf <<EOF
 fs.file-max = 1000000
+
+net.ipv4.tcp_window_scaling=1
+net.ipv4.tcp_timestamps=1
+net.ipv4.tcp_sack=1
+net.ipv4.tcp_syn_retries=1
+net.ipv4.tcp_rmem=4096 65536 16777216
+net.ipv4.tcp_wmem=4096 65536 16777216
+
 net.ipv4.tcp_fastopen = 3
 net.core.default_qdisc = fq_pie
 net.ipv4.tcp_congestion_control = bbr
