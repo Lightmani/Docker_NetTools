@@ -111,6 +111,24 @@
 }
 },
 {
+"tag": "socks",
+"protocol": "socks",
+"settings":{
+"domainStrategy": "UseIPv4",
+"servers":[{
+"address":"127.0.0.1",
+"port":9090,
+"_users": [
+        {
+          "user": "test user",
+          "pass": "test pass",
+          "level": 0
+        }
+      ]
+}]
+}
+},
+{
 "protocol": "blackhole",
 "tag": "block"
 }
