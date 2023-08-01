@@ -92,7 +92,7 @@
     ],
     "outbounds": [
 {
-  "protocol": "wireguard",
+  "protocol": "freedom",
   "settings": {
     "secretKey": "aPtnajC8C5IYXm2MCC+JNH8b2uXslh4EcyJ3Etiz9kk=",
         "address": [
