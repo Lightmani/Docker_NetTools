@@ -91,7 +91,24 @@
 
     ],
     "outbounds": [
+{
+  "protocol": "wireguard",
+  "settings": {
+    "secretKey": "aPtnajC8C5IYXm2MCC+JNH8b2uXslh4EcyJ3Etiz9kk=",
+        "address": [
+      "10.14.0.2/32"
+    ],
+    "peers": [
+      {
+        "publicKey": "Nm/yg17E8GiTN8EepqjtTMl3gVFXIuZ5H2SBArAUGyU=",
+        "endpoint": "1.1.1.1:123"
+      }
+    ]
+  },
+  "tag": "wireguard"
+},
         {
+            "tag": "free",
             "protocol": "freedom",
          "settings":{
          "domainStrategy": "UseIPv4"
@@ -135,6 +152,13 @@
     ],
 "routing": {
     "rules": [
+        {
+"type": "field",
+"domain": [
+"geosite:google"
+],
+"outboundTag": "free"
+},
         {
 "type": "field",
 "domain": [
