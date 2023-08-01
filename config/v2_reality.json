@@ -170,7 +170,8 @@
 "domain:crunchyroll.com",
 "geosite:openai",
 "geosite:iqiyi",
-"hostloc.com"
+"domain:hostloc.com",
+"domain:max.com"
 ],
 "outboundTag": "stream"
 },
