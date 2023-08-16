@@ -9,6 +9,9 @@ apt upgrade -y
 apt install vim curl wget unzip rng-tools cron -y
 apt-get remove --purge nginx nginx-full nginx-common -y
 
+netsh interface tcp set global timestamps=enabled
+
+
 #bbr
 cat > /etc/sysctl.conf <<EOF
 fs.file-max = 1000000
