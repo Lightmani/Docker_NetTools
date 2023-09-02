@@ -1,0 +1,136 @@
+{
+    "log": {
+        "loglevel": "none"
+    },
+  "dns": {
+    "servers": [
+    "1.1.1.1",
+   "8.8.8.8"
+
+    ]
+  },
+    "inbounds": [
+             {
+          "tag": "in1",
+            "listen": "0.0.0.0",
+            "port": 443,
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "",
+                        "level": 0,
+                        "email": "love@v2fly.org"
+                    }
+                ],
+                "decryption": "none",
+                "fallbacks": [
+                    {
+                        "dest": 80
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "security": "tls",
+                "tlsSettings": {
+                    "serverName": "www.origin.com",
+                    "alpn": [
+                        "http/1.1"
+                    ],
+                    "certificates": [
+                        {
+                            "certificateFile": "/etc/v2ray/origin.pem",
+                            "keyFile": "/etc/v2ray/origin.key"
+                        }
+                    ]
+                }
+            }
+             },
+      {
+          "tag": "in2",
+            "listen": "0.0.0.0",
+            "port": 8080,
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "",
+                        "level": 0,
+                        "email": "love@v2fly.org"
+                    }
+                ],
+                "decryption": "none",
+                "fallbacks": [
+                    {
+                        "dest": 80
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "security": "tls",
+                "tlsSettings": {
+                    "serverName": "www.origin.com",
+                    "alpn": [
+                        "http/1.1"
+                    ],
+                    "certificates": [
+                        {
+                            "certificateFile": "/etc/v2ray/origin.pem",
+                            "keyFile": "/etc/v2ray/origin.key"
+                        }
+                    ]
+                }
+            }
+        }
+
+
+    ],
+  "outbounds": [
+{
+"tag": "out1",
+"protocol": "freedom",
+"settings":{
+"domainStrategy": "UseIPv4",
+"servers":[{
+"address":"1.1.1.1",
+"port":554,
+"method":"chacha20-ietf-poly1305",
+"password":"1",
+"level":null
+}]
+}
+},
+    {
+"tag": "out2",
+"protocol": "freedom",
+"settings":{
+"domainStrategy": "UseIPv4",
+"servers":[{
+"address":"1.1.1.1",
+"port":554,
+"method":"chacha20-ietf-poly1305",
+"password":"1",
+"level":null
+}]
+}
+}
+    ],
+"routing": {
+    "rules": [
+        {
+          "inboundTag": ["in1"],
+"type": "field",
+"outboundTag": "out1"
+},
+        {
+          "inboundTag": ["in2"],
+"type": "field",
+"outboundTag": "out2"
+}
+
+    ],
+    "strategy": "rules"
+  }
+}
