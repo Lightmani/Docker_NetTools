@@ -208,3 +208,5 @@ cat>config.json<<EOF
   }
 }
 EOF
+
+echo -e "${Red} 用户id（UUID）：${Font} ${pass}"
