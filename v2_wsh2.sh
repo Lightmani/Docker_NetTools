@@ -212,10 +212,9 @@ apt autoremove -y
 
 clear
 echo "*******************************************************************"
-echo -e "${Red} 用户域名：${Font} ${yoursite}"
 echo -e "${Red} 用户id（UUID）：${Font} ${UUID}"
-echo -e "${Red} ss密码是${sspass}"
-echo -e "${Red} Public Key is ：${Font} ${publickey}"
+echo -e "${Red} H2传输Path ：${Font} ${path}"
+echo -e "${Red} WS传输Path ：${Font} ${cdnspath}"
 }
 
 update(){
