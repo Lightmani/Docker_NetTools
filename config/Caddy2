@@ -15,9 +15,14 @@
 	}
 	
 
+reverse_proxy /SeuW56Es 127.0.0.1:2001 {
+        transport http {
+            versions h2c
+        }
+}
 
    @websockets {
-      path /speedtest
+      path /dawe321gzc
       header Connection Upgrade
       header Upgrade websocket
     }
