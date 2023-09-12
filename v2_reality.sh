@@ -112,15 +112,18 @@ sspass=$(openssl rand -base64 32)
 key=$(/usr/local/bin/xray x25519)
 privatekey=$(echo $key | grep "Private key:" | awk  '{print substr($3,1)}')
 publickey=$(echo $key | grep "Public key:" | awk  '{print substr($6,1)}')  
+path=$(openssl rand -hex 12)
 
     sed -i "/\"id\"/c \\\t  \"id\":\"${UUID}\"," /etc/v2ray/config.json
 sed -i "/\"password\"/c \\\t  \"password\":\"${sspass}\"," /etc/v2ray/config.json
+sed -i "s/SeuW56Es/$path/g" /etc/v2ray/config.json
 
 sed -i "s/dasdczxyrtgm345xa2/$yoursite/g" /etc/v2ray/config.json
 
 sed -i "s/hfghgrwriyubvccxz/$privatekey/g" /etc/v2ray/config.json
 
 sed -i "s/dasdczxyrtgm345xa2/$yoursite/g" /etc/caddy/Caddyfile
+sed -i "s/SeuW56Es/$path/g" /etc/caddy/Caddyfile
 
 }
 
@@ -213,6 +216,7 @@ echo -e "${Red} 用户域名：${Font} ${yoursite}"
 echo -e "${Red} 用户id（UUID）：${Font} ${UUID}"
 echo -e "${Red} ss密码是${sspass}"
 echo -e "${Red} Public Key is ：${Font} ${publickey}"
+echo -e "${Red} H2传输Path ：${Font} ${path}"
 }
 
 update(){
