@@ -113,10 +113,12 @@ key=$(/usr/local/bin/xray x25519)
 privatekey=$(echo $key | grep "Private key:" | awk  '{print substr($3,1)}')
 publickey=$(echo $key | grep "Public key:" | awk  '{print substr($6,1)}')  
 path=$(openssl rand -hex 12)
+cdnspath=$(openssl rand -hex 8)
 
-    sed -i "/\"id\"/c \\\t  \"id\":\"${UUID}\"," /etc/v2ray/config.json
+sed -i "/\"id\"/c \\\t  \"id\":\"${UUID}\"," /etc/v2ray/config.json
 sed -i "/\"password\"/c \\\t  \"password\":\"${sspass}\"," /etc/v2ray/config.json
 sed -i "s/SeuW56Es/$path/g" /etc/v2ray/config.json
+sed -i "s/dawe321gzc/$cdnspath/g" /etc/v2ray/config.json
 
 sed -i "s/dasdczxyrtgm345xa2/$yoursite/g" /etc/v2ray/config.json
 
@@ -124,6 +126,7 @@ sed -i "s/hfghgrwriyubvccxz/$privatekey/g" /etc/v2ray/config.json
 
 sed -i "s/dasdczxyrtgm345xa2/$yoursite/g" /etc/caddy/Caddyfile
 sed -i "s/SeuW56Es/$path/g" /etc/caddy/Caddyfile
+sed -i "s/dawe321gzc/$cdnspath/g" /etc/caddy/Caddyfile
 
 }
 
