@@ -155,7 +155,7 @@
   "address": "8.8.8.8",
   "port": 53,
   "nonIPQuery": "drop"
-        }},
+        },
             "tag": "dns-out"
         },
         {
