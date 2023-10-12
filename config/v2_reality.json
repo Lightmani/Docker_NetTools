@@ -134,7 +134,7 @@
 {
   "protocol": "freedom",
   "settings": {
-      "domainStrategy": "UseIPv4"
+      "domainStrategy": "UseIPv4",
     "secretKey": "aPtnajC8C5IYXm2MCC+JNH8b2uXslh4EcyJ3Etiz9kk=",
         "address": [
       "10.14.0.2/32"
