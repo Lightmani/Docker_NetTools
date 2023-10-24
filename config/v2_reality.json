@@ -9,7 +9,7 @@
         "address": "1.1.1.1",
         "port": 53,
         "domains": [
-"geosite:bilibili"
+"geosite:google"
         ]
       }
 
@@ -40,7 +40,7 @@
                         "dasdczxyrtgm345xa2"
                     ],
                     "privateKey": "hfghgrwriyubvccxz",
-                    "minClientVer": "1.8.1",
+                    "minClientVer": "1.8.4",
                     "maxClientVer": "",
                     "maxTimeDiff": 0,
                     "shortIds": [
@@ -195,10 +195,6 @@
       ]
 }]
 }
-},
-{
-"protocol": "blackhole",
-"tag": "block"
 }
     ],
 "routing": {
@@ -230,14 +226,7 @@
 "domain:max.com"
 ],
 "outboundTag": "stream"
-},
-        {
-                "type": "field",
-                "domain": [
-                    "geosite:category-ads-all"
-                ],
-                "outboundTag": "block"
-            }
+}
     ],
     "strategy": "rules"
   }
