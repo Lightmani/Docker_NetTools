@@ -157,8 +157,7 @@ v2_nginx(){
 apt-get remove --purge nginx nginx-full nginx-common -y
 apt install -y curl vim wget unzip apt-transport-https lsb-release ca-certificates git gnupg2 netcat socat 
 
-apt install -y debian-keyring debian-archive-keyring apt-transport-https sudo
-sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https
+sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https curl sudo
 curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
 curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
 sudo apt update
