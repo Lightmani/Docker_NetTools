@@ -6,8 +6,7 @@ read -p " 请输入你的网址:" yoursite
 environment(){
 apt update 
 apt upgrade -y
-apt install vim curl wget unzip rng-tools cron -y
-apt-get remove --purge nginx nginx-full nginx-common -y
+apt install vim curl wget unzip rng-tools cron sudo -y
 
 netsh interface tcp set global timestamps=enabled
 
@@ -98,9 +97,6 @@ EOF
 
 systemctl daemon-reload
 
-
-
-
 echo "HRNGDEVICE=/dev/urandom">>/etc/default/rng-tools
 
 }
@@ -154,10 +150,10 @@ service sshd restart
 #LNMP一键
 v2_nginx(){
 
-apt-get remove --purge nginx nginx-full nginx-common -y
+apt remove --purge nginx nginx-full nginx-common -y
 apt install -y curl vim wget unzip apt-transport-https lsb-release ca-certificates git gnupg2 netcat socat 
 
-sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https curl sudo
+apt install -y debian-keyring debian-archive-keyring apt-transport-https curl sudo
 curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
 curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
 sudo apt update
