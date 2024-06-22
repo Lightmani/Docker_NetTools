@@ -24,7 +24,7 @@ net.ipv4.tcp_rmem=4096 65536 16777216
 net.ipv4.tcp_wmem=4096 65536 16777216
 
 net.ipv4.tcp_fastopen = 3
-net.core.default_qdisc = fq_pie
+net.core.default_qdisc = fq
 net.ipv4.tcp_congestion_control = bbr
 EOF
 sysctl -p && sysctl --system
@@ -112,21 +112,15 @@ sspass=$(openssl rand -base64 32)
 key=$(/usr/local/bin/xray x25519)
 privatekey=$(echo $key | grep "Private key:" | awk  '{print substr($3,1)}')
 publickey=$(echo $key | grep "Public key:" | awk  '{print substr($6,1)}')  
-path=$(openssl rand -hex 12)
-cdnspath=$(openssl rand -hex 8)
 
 sed -i "/\"id\"/c \\\t  \"id\":\"${UUID}\"," /etc/v2ray/config.json
 sed -i "/\"password\"/c \\\t  \"password\":\"${sspass}\"," /etc/v2ray/config.json
-sed -i "s/SeuW56Es/$path/g" /etc/v2ray/config.json
-sed -i "s/dawe321gzc/$cdnspath/g" /etc/v2ray/config.json
 
 sed -i "s/dasdczxyrtgm345xa2/$yoursite/g" /etc/v2ray/config.json
 
 sed -i "s/hfghgrwriyubvccxz/$privatekey/g" /etc/v2ray/config.json
 
 sed -i "s/dasdczxyrtgm345xa2/$yoursite/g" /etc/caddy/Caddyfile
-sed -i "s/SeuW56Es/$path/g" /etc/caddy/Caddyfile
-sed -i "s/dawe321gzc/$cdnspath/g" /etc/caddy/Caddyfile
 
 }
 
@@ -186,19 +180,15 @@ wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/Caddy2 -cO C
 #V2ray
 mkdir /etc/v2ray
 chmod 755 /etc/v2ray/*
-wget --no-check-certificate -O /etc/v2ray/origin.key https://github.com/Lightmani/Docker_NetTools/raw/master/origin.key
-wget --no-check-certificate -O /etc/v2ray/origin.pem https://github.com/Lightmani/Docker_NetTools/raw/master/origin.pem
-wget --no-check-certificate -O /etc/v2ray/xbox.pem https://github.com/Lightmani/Docker_NetTools/raw/master/xbox.pem
-wget --no-check-certificate -O /etc/v2ray/xbox.key https://github.com/Lightmani/Docker_NetTools/raw/master/xbox.key
-cat /etc/v2ray/v2ray.crt /etc/v2ray/v2ray.key > /etc/v2ray/v2ray.pem
 chmod 755 /etc/v2ray/*
 
 
 cd /etc/v2ray
 rm config.json
-*****************************************
+
+
 wget https://raw.githubusercontent.com/Lightmani/Docker_NetTools/master/config/v2_reality.json  -cO config.json
-bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install --version 1.8.13
+bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install --version 1.8.16
 
 modify_port_UUID
 
@@ -219,7 +209,6 @@ echo -e "${Red} 用户域名：${Font} ${yoursite}"
 echo -e "${Red} 用户id（UUID）：${Font} ${UUID}"
 echo -e "${Red} ss密码是${sspass}"
 echo -e "${Red} Public Key is ：${Font} ${publickey}"
-echo -e "${Red} H2传输Path ：${Font} ${path}"
 }
 
 update(){
