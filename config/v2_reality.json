@@ -86,7 +86,8 @@
 "settings": {
   "clients": [
     {
-      "id": ""
+        "id": "",
+        "flow": "none"
     }
   ],
   "decryption": "none"
@@ -94,7 +95,7 @@
 "streamSettings": {
   "network": "splithttp",
   "splithttpSettings": {
-    "path": "/speedtest"
+    "path": "/speedtest",
         "host": "dasdczxyrtgm345xa2",
 "maxUploadSize": 1000000,
 "maxConcurrentUploads": 10 
@@ -135,7 +136,8 @@
 "address":"1.1.1.1",
 "port":554,
 "method":"2022-blake3-chacha20-poly1305",
-"password":"1"
+"password":"1",
+"email": "love@xray.com"
 }]
 }
 },
