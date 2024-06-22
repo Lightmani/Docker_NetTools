@@ -7,7 +7,7 @@
 	}
 }
 
-:443, :2096, dasdczxyrtgm345xa2 {
+:443, dasdczxyrtgm345xa2 {
 	tls invalidemail@caddyserver.com {
 		ciphers TLS_AES_256_GCM_SHA384 TLS_AES_128_GCM_SHA256 TLS_CHACHA20_POLY1305_SHA256 TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256 TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256
 		curves x25519 secp521r1 secp384r1 secp256r1
@@ -15,18 +15,9 @@
 	}
 	
 
-reverse_proxy /SeuW56Es 127.0.0.1:18888 {
-        transport http {
-            versions h2c
-        }
-}
-
-   @websockets {
-      path /dawe321gzc
-      header Connection Upgrade
-      header Upgrade websocket
-    }
-reverse_proxy @websockets 127.0.0.1:28888
+	handle /speedtest/* {
+		reverse_proxy http://127.0.0.1:18888
+	}
 
 	@host {
 		host dasdczxyrtgm345xa2
