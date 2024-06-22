@@ -4,12 +4,12 @@
     },
   "dns": {
     "servers": [
-    "1.1.1.1",
+    "8.8.8.8",
      {
-        "address": "1.1.1.1",
+        "address": "8.8.8.8",
         "port": 53,
         "domains": [
-"geosite:google"
+"geosite:netflix"
         ]
       }
 
@@ -40,14 +40,22 @@
                         "dasdczxyrtgm345xa2"
                     ],
                     "privateKey": "hfghgrwriyubvccxz",
-                    "minClientVer": "1.8.4",
+                    "minClientVer": "1.8.13",
                     "maxClientVer": "",
                     "maxTimeDiff": 0,
                     "shortIds": [
                         "8964"
                     ]
                 }
-            }
+            },
+        "sniffing": {
+          "enabled": true,
+          "destOverride": [
+            "http",
+            "tls",
+            "quic"
+          ]
+        }
         },
     {
  "tag": "nf",
@@ -61,109 +69,63 @@
 "network": "tcp,udp",
             "level": 0
 
+},
+"sniffing": {
+  "enabled": true,
+  "destOverride": [
+    "http",
+    "tls",
+    "quic"
+  ]
 }
 },
 {
-      "listen": "127.0.0.1",
-      "port": 18888,
-      "protocol": "vmess",
-      "settings": {
-        "clients": [
-          {
-            "id": "",
-            "alterId": 0,
-            "email": "11111@gmail.com"
-          }
-        ],
-        "disableInsecureEncryption": false
-      },
-      "streamSettings": {
-        "network": "h2",
-       "security": "none",
-          "tlsSettings": {
-                    "certificates": [
-                        {
-                            "certificateFile": "/etc/v2ray/v2ray.crt", 
-                            "keyFile": "/etc/v2ray/v2ray.key"
-                        }
-                    ]
-                },
-        "httpSettings": {
-          "path": "/SeuW56Es",
-           "host": [
-            "dasdczxyrtgm345xa2"
-          ]
-        }
-      },
-      "sniffing": {
-        "enabled": true,
-        "destOverride": [
-          "http",
-          "tls"
-        ]
-      }
-    },
-  {
-         "listen": "127.0.0.1",
-            "port": 28888,
-            "protocol": "vmess",
-            "settings": {
-                "clients": [
-                    {
-                        "id": "",
-                      "alterId": 0,
-                    "security": "auto"
-                    }
-                ]
-            },
-      "streamSettings": {
-        "network": "ws",
-        "security": "none",
-        "wsSettings": {
-          "path": "/speedtest",
-             "headers": {
-             "Host": "dasdczxyrtgm345xa2"
+"listen": "127.0.0.1",
+"port": 18888,
+"protocol": "vless",
+"settings": {
+  "clients": [
+    {
+      "id": ""
     }
-        }
-      }
-    }
-
-
+  ],
+  "decryption": "none"
+},
+"streamSettings": {
+  "network": "splithttp",
+  "splithttpSettings": {
+    "path": "/speedtest"
+        "host": "dasdczxyrtgm345xa2",
+"maxUploadSize": 1000000,
+"maxConcurrentUploads": 10 
+  }
+},
+"sniffing": {
+  "enabled": true,
+  "destOverride": [
+    "http",
+    "tls",
+    "quic"
+  ]
+}
+}
     ],
     "outbounds": [
-{
-  "protocol": "freedom",
-  "settings": {
-      "domainStrategy": "UseIPv4",
-    "secretKey": "aPtnajC8C5IYXm2MCC+JNH8b2uXslh4EcyJ3Etiz9kk=",
-        "address": [
-      "10.14.0.2/32"
-    ],
-    "peers": [
-      {
-        "publicKey": "Nm/yg17E8GiTN8EepqjtTMl3gVFXIuZ5H2SBArAUGyU=",
-        "endpoint": "1.1.1.1:123"
-      }
-    ]
-  },
-  "tag": "wireguard"
-},
+        {
+            "protocol": "freedom",
+         "settings":{
+         "domainStrategy": "UseIP"
+        }},
         {
             "protocol": "dns",
               "settings":{
-         "network": "udp",
+         "network": "tcp,udp",
   "address": "8.8.8.8",
   "port": 53,
   "nonIPQuery": "drop"
         },
             "tag": "dns-out"
         },
-        {
-            "tag": "free",
-            "protocol": "freedom",
-         "settings":{
-         "domainStrategy": "UseIPv4"
-        }},
 {
 "tag": "stream",
 "protocol": "freedom",
@@ -173,8 +135,7 @@
 "address":"1.1.1.1",
 "port":554,
 "method":"2022-blake3-chacha20-poly1305",
-"password":"1",
-"level":null
+"password":"1"
 }]
 }
 },
@@ -189,8 +150,7 @@
 "_users": [
         {
           "user": "test user",
-          "pass": "test pass",
-          "level": 0
+          "pass": "test pass"
         }
       ]
 }]
@@ -207,19 +167,10 @@
         {
 "type": "field",
 "domain": [
-"geosite:google"
-],
-"outboundTag": "free"
-},
-        {
-"type": "field",
-"domain": [
 "geosite:netflix",
 "geosite:disney",
 "geosite:hbo",
-"geosite:hulu",
 "domain:myvideo.net.tw",
-"domain:crunchyroll.com",
 "geosite:openai",
 "geosite:iqiyi",
 "domain:hostloc.com",
