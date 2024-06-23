@@ -6,7 +6,7 @@ read -p " 请输入你的网址:" yoursite
 environment(){
 apt update 
 apt upgrade -y
-apt install vim curl wget unzip rng-tools cron sudo -y
+apt install vim curl wget unzip rng-tools cron sudo gnupg2 -y
 
 netsh interface tcp set global timestamps=enabled
 
