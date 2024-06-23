@@ -115,7 +115,7 @@
         {
             "protocol": "freedom",
          "settings":{
-         "domainStrategy": "UseIP"
+         "domainStrategy": "UseIPv4"
         }},
         {
             "protocol": "dns",
