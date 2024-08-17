@@ -181,8 +181,8 @@ modify_port_UUID
 
 
 service sing-box restart
+service nginx restart
 systemctl enable sing-box
-systemctl enable nginx
 apt autoremove -y
 
 
