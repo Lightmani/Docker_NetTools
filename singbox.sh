@@ -105,8 +105,7 @@ modify_port_UUID(){
 
 sspass=$(openssl rand -base64 32)
 
-sed -i "/\"password\"/c \\\t  \"password\":\"${sspass}\" /etc/sing-box/config.json
-
+sed -i "s/cxzxcdasdabcvgd/${sspass}/g" /etc/sing-box/config.json
 sed -i "s/dasdczxyrtgm345xa2/$yoursite/g" /etc/sing-box/config.json
 sed -i "s/dasdczxyrtgm345xa2/$yoursite/g" /etc/sing-box/config.json
 sed -i "/server_name/c \\\t  server_name $yoursite;" /etc/nginx/conf.d/site.conf
