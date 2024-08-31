@@ -64,7 +64,7 @@
             "port": 52666,
 "settings": {
 
-            "method": "chacha20-poly1305",
+            "method": "2022-blake3-chacha20-poly1305",
             "password": "",
 "network": "tcp,udp",
             "level": 0
@@ -133,7 +133,7 @@
 "servers":[{
 "address":"1.1.1.1",
 "port":52666,
-"method":"chacha20-poly1305",
+"method":"2022-blake3-chacha20-poly1305",
 "password":"1",
 "email": "love@xray.com"
 }]
