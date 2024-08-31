@@ -61,12 +61,12 @@
  "tag": "nf",
  "protocol": "shadowsocks",
  "address": "0.0.0.0",
-            "port": 554,
+            "port": 52666,
 "settings": {
 
-            "method": "2022-blake3-chacha20-poly1305",
+            "method": "chacha20-poly1305",
             "password": "",
-"network": "tcp",
+"network": "tcp,udp",
             "level": 0
 
 },
