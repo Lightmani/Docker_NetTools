@@ -111,6 +111,7 @@ publickey=$(echo $key | grep "Public key:" | awk  '{print substr($6,1)}')
 
 sed -i "/\"id\"/c \\\t  \"id\":\"${UUID}\"," /etc/v2ray/config.json
 sed -i "/\"password\"/c \\\t  \"password\":\"${sspass}\"," /etc/v2ray/config.json
+sed -i "s/cxzxcdasdabcvgd/${sspass}/g" /etc/sing-box/config.json
 
 sed -i "s/dasdczxyrtgm345xa2/$yoursite/g" /etc/v2ray/config.json
 
@@ -176,20 +177,25 @@ wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/Caddy2 -cO C
 mkdir /etc/v2ray
 chmod 755 /etc/v2ray/*
 chmod 755 /etc/v2ray/*
-
-
 cd /etc/v2ray
 rm config.json
-
-
 wget https://raw.githubusercontent.com/Lightmani/Docker_NetTools/master/config/v2_reality.json  -cO config.json
 bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install --version 1.8.24
+
+#Singbox
+bash <(curl -fsSL https://sing-box.app/deb-install.sh)
+rm /etc/sing-box/config.json
+wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/singbox_ss.conf  -cO /etc/sing-box/config.json
+
+
 
 modify_port_UUID
 
 service caddy restart
 rm /usr/local/etc/xray/config.json
 ln -s /etc/v2ray/config.json /usr/local/etc/xray/config.json
+service sing-box restart
+systemctl enable sing-box
 service xray restart
 systemctl enable xray
 systemctl enable caddy
