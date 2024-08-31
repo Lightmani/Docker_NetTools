@@ -40,7 +40,7 @@
                         "dasdczxyrtgm345xa2"
                     ],
                     "privateKey": "hfghgrwriyubvccxz",
-                    "minClientVer": "1.8.13",
+                    "minClientVer": "1.8.24",
                     "maxClientVer": "",
                     "maxTimeDiff": 0,
                     "shortIds": [
@@ -66,7 +66,7 @@
 
             "method": "2022-blake3-chacha20-poly1305",
             "password": "",
-"network": "tcp,udp",
+"network": "tcp",
             "level": 0
 
 },
@@ -117,16 +117,6 @@
          "settings":{
          "domainStrategy": "UseIPv4"
         }},
-        {
-            "protocol": "dns",
-              "settings":{
-         "network": "tcp,udp",
-  "address": "8.8.8.8",
-  "port": 53,
-  "nonIPQuery": "drop"
-        },
-            "tag": "dns-out"
-        },
 {
 "tag": "stream",
 "protocol": "freedom",
@@ -161,11 +151,6 @@
     ],
 "routing": {
     "rules": [
-     {
-                "type": "field",
-                "port": 53,
-                "outboundTag": "dns-out"
-            },
         {
 "type": "field",
 "domain": [
@@ -174,8 +159,7 @@
 "geosite:hbo",
 "domain:myvideo.net.tw",
 "geosite:openai",
-"geosite:iqiyi",
-"domain:hostloc.com",
+"domain:crunchyroll.com",
 "domain:max.com"
 ],
 "outboundTag": "stream"
