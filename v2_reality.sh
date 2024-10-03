@@ -189,18 +189,18 @@ bash <(curl -fsSL https://sing-box.app/deb-install.sh)
 rm /etc/sing-box/config.json
 wget https://github.com/Lightmani/Docker_NetTools/raw/master/config/singbox_ss.conf  -cO /etc/sing-box/config.json
 
-
-
 modify_port_UUID
+systemctl enable sing-box
+systemctl enable xray
+systemctl enable caddy
 
 service caddy restart
 rm /usr/local/etc/xray/config.json
 ln -s /etc/v2ray/config.json /usr/local/etc/xray/config.json
 service sing-box restart
-systemctl enable sing-box
+
 service xray restart
-systemctl enable xray
-systemctl enable caddy
+
 apt autoremove -y
 
 
