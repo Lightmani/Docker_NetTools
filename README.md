@@ -18,7 +18,7 @@ apt install wget -y && wget --no-check-certificate -O /opt/v2.sh https://github.
 
 安装探针
 
-wget https://raw.githubusercontent.com/cokemine/ServerStatus-Hotaru/master/status.sh && bash status.sh c
+wget --no-check-certificate -O /opt/serverstatus.sh  https://github.com/Lightmani/Docker_NetTools/raw/refs/heads/master/serverstatus.sh && chmod 755 /opt/serverstatus.sh   && bash /opt/serverstatus.sh 
 
 
 下载Hysteria配置
