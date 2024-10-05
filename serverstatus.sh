@@ -5,7 +5,7 @@ read -p "请输入用户名: " USERNAME
 read -sp "请输入密码: " PASSWORD
 echo
 
-apt install -y vnstat
+apt install -y vnstat wget unzip curl
 systemctl restart vnstat
 systemctl enable vnstat
 
