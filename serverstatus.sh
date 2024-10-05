@@ -11,7 +11,7 @@ apt install -y vnstat
 systemctl restart vnstat
 systemctl enable vnstat
 
-
+mkdir /opt
 WORKSPACE=/opt/ServerStatus
 mkdir -p ${WORKSPACE}
 cd ${WORKSPACE}
