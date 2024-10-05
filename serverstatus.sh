@@ -41,7 +41,7 @@ User=root
 Group=root
 Environment="RUST_BACKTRACE=1"
 WorkingDirectory=${WORKSPACE}
-ExecStart=/opt/ServerStatus/stat_client -a "${TARGET_HOST}" -u "${USERNAME}" -p "${PASSWORD} -n --cm gd.ac.10086.cn:80 --ct www.02010010.com:80 --cu haosuan.com:80 "
+ExecStart=/opt/ServerStatus/stat_client -a "${TARGET_HOST}report" -u "${USERNAME}" -p "${PASSWORD}" -n --cm gd.ac.10086.cn:80 --ct www.02010010.com:80 --cu haosuan.com:80
 ExecReload=/bin/kill -HUP \$MAINPID
 Restart=on-failure
 
