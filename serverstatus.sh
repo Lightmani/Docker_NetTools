@@ -1,6 +1,4 @@
 #!/bin/bash
-set -ex
-
 # 获取用户输入
 read -p "请输入目标Host: " TARGET_HOST
 read -p "请输入用户名: " USERNAME
@@ -11,7 +9,6 @@ apt install -y vnstat
 systemctl restart vnstat
 systemctl enable vnstat
 
-mkdir /opt
 WORKSPACE=/opt/ServerStatus
 mkdir -p ${WORKSPACE}
 cd ${WORKSPACE}
