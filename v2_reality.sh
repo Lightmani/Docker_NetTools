@@ -131,7 +131,7 @@ cat>config.json<<EOF
 }
 EOF
 
-docker run -d --name ss-rust --restart always --net host -v /etc/ss-$name:/etc/shadowsocks-rust teddysun/shadowsocks-rust
+docker run -d --name ss-rust --restart always --net host -v /etc/ss-$name:/etc/ss-rust teddysun/ss-rust
 
 
 
