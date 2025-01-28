@@ -40,20 +40,18 @@
                         "dasdczxyrtgm345xa2"
                     ],
                     "privateKey": "hfghgrwriyubvccxz",
-                    "minClientVer": "1.8.24",
+                    "minClientVer": "",
                     "maxClientVer": "",
                     "maxTimeDiff": 0,
                     "shortIds": [
-                        "8964"
+                        "2666"
                     ]
                 }
             },
         "sniffing": {
           "enabled": true,
           "destOverride": [
-            "http",
-            "tls",
-            "quic"
+            "fakedns+others"
           ]
         }
         },
@@ -73,51 +71,10 @@
 "sniffing": {
   "enabled": true,
   "destOverride": [
-    "http",
-    "tls",
-    "quic"
+"fakedns+others"
   ]
 }
-},
-{
-"listen": "127.0.0.1",
-"port": 18888,
-"protocol": "vless",
-"settings": {
-  "clients": [
-    {
-        "id": "",
-        "flow": ""
-    }
-  ],
-  "decryption": "none"
-},
-"streamSettings": {
-  "network": "splithttp",
-  "splithttpSettings": {
-    "path": "/speedtest",
-        "host": "dasdczxyrtgm345xa2",
-"maxUploadSize": 1000000,
-"maxConcurrentUploads": 10 
-  }
-},
-"sniffing": {
-  "enabled": true,
-  "destOverride": [
-    "http",
-    "tls",
-    "quic"
-  ]
 }
-},
-        {
-            "listen": "127.0.0.1",
-            "port": 9999,
-            "protocol": "socks",
-            "settings": {
-                "udp": true,
-                "ip": "127.0.0.1"
-            }}
     ],
     "outbounds": [
         {
@@ -143,7 +100,6 @@
 "tag": "socks",
 "protocol": "socks",
 "settings":{
-"domainStrategy": "UseIPv4",
 "servers":[{
 "address":"127.0.0.1",
 "port":9090,
@@ -163,9 +119,7 @@
 "type": "field",
 "domain": [
 "geosite:netflix",
-"geosite:disney",
 "geosite:hbo",
-"domain:myvideo.net.tw",
 "geosite:openai",
 "domain:crunchyroll.com",
 "domain:max.com"
