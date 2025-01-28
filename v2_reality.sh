@@ -8,7 +8,16 @@ apt update
 apt upgrade -y
 apt install vim curl wget unzip rng-tools cron sudo gnupg2 -y
 echo "HRNGDEVICE=/dev/urandom">>/etc/default/rng-tools
-
+apt install resolvconf -y
+systemctl start resolvconf.service
+systemctl enable resolvconf.service
+cat>/etc/resolvconf/resolv.conf.d/head<<EOF
+nameserver 8.8.8.8
+nameserver 1.1.1.1
+EOF
+resolvconf -u
+mkdir -p /etc/wireguard/
+apt install wireguard -y
 }
 
 modify_port_UUID(){
