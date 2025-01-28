@@ -124,7 +124,7 @@ cat>config.json<<EOF
 "timeout":300,
 "method":"chacha20-ietf-poly1305",
 "fast_open":true,
-"nameserver":"8.8.8.8",
+"dns":"8.8.8.8",
 "mode":"tcp_and_udp",
 "plugin":"v2ray-plugin",
 "plugin_opts":"server;path=/speedtest/;mux=0"
