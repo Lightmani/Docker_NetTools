@@ -106,32 +106,10 @@ systemctl enable caddy
 service caddy restart
 rm /usr/local/etc/xray/config.json
 ln -s /etc/v2ray/config.json /usr/local/etc/xray/config.json
-service sing-box restart
+#service sing-box restart
 service xray restart
 
-wget -qO- get.docker.com | bash
-systemctl enable docker
-systemctl start docker
 
- 
-mkdir /etc/ss-rust
-cd /etc/ss-rust
-cat>config.json<<EOF
-{
-"server":"127.0.0.1",
-"server_port":18888,
-"password":"$sspass",
-"timeout":300,
-"method":"chacha20-ietf-poly1305",
-"fast_open":true,
-"dns":"8.8.8.8",
-"mode":"tcp_and_udp",
-"plugin":"v2ray-plugin",
-"plugin_opts":"server;path=/speedtest/;mux=0"
-}
-EOF
-
-docker run -d --name ss-rust --restart always --net host -v /etc/ss-rust:/etc/shadowsocks-rust teddysun/shadowsocks-rust
 
 
 
