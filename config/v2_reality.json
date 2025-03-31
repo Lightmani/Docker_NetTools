@@ -76,7 +76,28 @@
 "fakedns+others"
   ]
 }
+},
+  {
+            "listen": "0.0.0.0",
+            "port": 52888,
+            "protocol": "vmess",
+            "settings": {
+                "clients": [
+                    {
+                        "id": ""
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "tcp"
+            },
+"sniffing": {
+  "enabled": true,
+  "destOverride": [
+"fakedns+others"
+  ]
 }
+        }
     ],
     "outbounds": [
         {
@@ -93,8 +114,7 @@
 "address":"1.1.1.1",
 "port":52666,
 "method":"2022-blake3-aes-256-gcm",
-"password":"1",
-"email": "love@xray.com"
+"password":"1"
 }]
 }
 }
@@ -105,8 +125,7 @@
 "type": "field",
 "domain": [
 "geosite:netflix",
-"geosite:openai",
-"domain:crunchyroll.com"
+"geostie:category-ai-!cn"
 ],
 "outboundTag": "stream"
 }
