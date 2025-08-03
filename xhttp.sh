@@ -63,19 +63,7 @@ apt update && apt upgrade -y
 apt install -y curl wget socat git nginx-common debian-archive-keyring lsb-release ca-certificates gnupg2 || print_error "Failed to install dependencies."
 print_success "System updated and dependencies installed."
 
-# 3. Install Latest Nginx Mainline
-print_step "Installing Latest Nginx (Mainline with QUIC/H2/TLS1.3 support)"
-# Add official Nginx repository
-curl -sS https://nginx.org/keys/nginx_signing.key | gpg --dearmor -o /usr/share/keyrings/nginx-archive-keyring.gpg
-echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] http://nginx.org/packages/mainline/debian/ $(lsb_release -cs) nginx" \
-    | tee /etc/apt/sources.list.d/nginx.list
-
-# Install Nginx
-apt update
-apt install -y nginx || print_error "Failed to install Nginx."
-# Verify installation
-nginx -v
-print_success "Nginx installed successfully."
+apt remove nginx nginx-commnon -y
 
 # 4. Configure Firewall (if ufw is active)
 if command -v ufw &> /dev/null && ufw status | grep -q "Status: active"; then
@@ -98,6 +86,20 @@ source ~/.bashrc
 mkdir -p /var/www/html
 # Issue certificate
 ~/.acme.sh/acme.sh --issue -d "$DOMAIN" --webroot /var/www/html --server letsencrypt || print_error "Certificate application failed."
+
+# 3. Install Latest Nginx Mainline
+print_step "Installing Latest Nginx (Mainline with QUIC/H2/TLS1.3 support)"
+# Add official Nginx repository
+curl -sS https://nginx.org/keys/nginx_signing.key | gpg --dearmor -o /usr/share/keyrings/nginx-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] http://nginx.org/packages/mainline/debian/ $(lsb_release -cs) nginx" \
+    | tee /etc/apt/sources.list.d/nginx.list
+
+# Install Nginx
+apt update
+apt install -y nginx || print_error "Failed to install Nginx."
+# Verify installation
+nginx -v
+print_success "Nginx installed successfully."
 
 # Install certificate to a standard location
 CERT_PATH="/etc/nginx/ssl/$DOMAIN.crt"
