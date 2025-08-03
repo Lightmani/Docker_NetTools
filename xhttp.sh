@@ -204,7 +204,7 @@ cat <<EOF > /etc/v2ray/config.json
         "network": "xhttp",
         "xhttpSettings": {
         "host": "${DOMAIN}",
-          "mode": "packet-up",
+          "mode": "auto",
           "path": "/download/"
         }
       },
