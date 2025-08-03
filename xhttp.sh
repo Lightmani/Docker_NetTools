@@ -86,7 +86,7 @@ source ~/.bashrc
 # Create webroot directory
 mkdir -p /var/www/html
 # Issue certificate
-~/.acme.sh/acme.sh --issue -d "$DOMAIN" --webroot /var/www/html --server letsencrypt || print_error "Certificate application failed."
+~/.acme.sh/acme.sh --issue -d $DOMAIN --standalone -k ec-256 || print_error "Certificate application failed."
 
 # 3. Install Latest Nginx Mainline
 print_step "Installing Latest Nginx (Mainline with QUIC/H2/TLS1.3 support)"
