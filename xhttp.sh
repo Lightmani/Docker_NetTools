@@ -130,7 +130,7 @@ server {
     listen [::]:443 quic reuseport ipv6only=off;
 
     server_name ${DOMAIN};
-
+  http2 on;
     # SSL Configuration
     ssl_certificate ${CERT_PATH};
     ssl_certificate_key ${KEY_PATH};
@@ -152,6 +152,7 @@ server {
     # Proxy configuration for Xray
 	location /download/ {
         client_max_body_size 0;
+	grpc_set_header Host \$host;
         grpc_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
         client_body_timeout 5m;
         grpc_read_timeout 315;
