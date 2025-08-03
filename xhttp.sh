@@ -60,10 +60,11 @@ print_success "Domain set to: $DOMAIN"
 # 2. System Update and Preparation
 print_step "Updating System and Installing Dependencies"
 apt update && apt upgrade -y
-apt install -y curl wget socat git nginx-common debian-archive-keyring lsb-release ca-certificates gnupg2 || print_error "Failed to install dependencies."
+apt install -y curl wget socat git debian-archive-keyring lsb-release ca-certificates gnupg2 || print_error "Failed to install dependencies."
 print_success "System updated and dependencies installed."
 
-apt remove nginx nginx-commnon -y
+apt-get remove --purge nginx nginx-full nginx-common -y
+
 
 # 4. Configure Firewall (if ufw is active)
 if command -v ufw &> /dev/null && ufw status | grep -q "Status: active"; then
