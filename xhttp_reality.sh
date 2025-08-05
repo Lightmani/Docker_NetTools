@@ -98,7 +98,7 @@ cat <<EOF > /etc/caddy/Caddyfile
 # Caddyfile for Xray
 # This file is managed automatically. Do not edit.
 
-{$DOMAIN} {
+${DOMAIN} {
     # Set headers to prevent IP leakage
     header {
         # Security headers
