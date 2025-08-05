@@ -109,7 +109,17 @@ ${DOMAIN} {
     }
 
     # Reverse proxy Xray traffic on /download/ to the backend Unix socket
-    reverse_proxy /download/ h2c://127.0.0.1:6666 {
+    handle /download/* {
+        reverse_proxy unix//dev/shm/Xray-VLESS-gRPC.socket {
+            transport http {
+                # 对应 grpc_read_timeout 和 grpc_send_timeout
+                read_timeout 315s
+                write_timeout 5m
+            }
+            # Caddy 自动设置 X-Forwarded-For 等头部。
+            # 'Host' 头部默认也会传递，这里显式设置以完全对应 grpc_set_header。
+            header_up Host {http.request.host}
+        }
     }
 
 
@@ -186,8 +196,7 @@ cat <<EOF > /etc/v2ray/config.json
         }
         },
     {
-            "listen": "127.0.0.1",
-            "port": 6666,
+"listen": "/dev/shm/Xray-VLESS-gRPC.socket,0666",
       "protocol": "vless",
       "settings": {
         "clients": [
@@ -201,7 +210,6 @@ cat <<EOF > /etc/v2ray/config.json
       "streamSettings": {
         "network": "xhttp",
         "xhttpSettings": {
-          "host": "${DOMAIN}",
           "mode": "auto",
           "path": "/download/"
         }
