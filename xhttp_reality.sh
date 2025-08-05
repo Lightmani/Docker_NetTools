@@ -65,7 +65,8 @@ print_success "Domain set to: $DOMAIN"
 print_step "Updating System and Installing Dependencies"
 apt update && apt upgrade -y
 # Caddy dependencies are included here
-apt install -y curl wget socat git debian-keyring debian-archive-keyring lsb-release ca-certificates gnupg cron || print_error "Failed to install dependencies."
+apt install -y curl wget socat git debian-keyring debian-archive-keyring lsb-release ca-certificates gnupg cron sudo || print_error "Failed to install dependencies."
+apt remove --purge nginx nginx-full nginx-common -y
 print_success "System updated and dependencies installed."
 
 # 3. Configure Firewall (if ufw is active)
@@ -88,6 +89,7 @@ print_step "Installing and Configuring Caddy"
 install -d -m 0755 /etc/apt/keyrings
 curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | gpg --dearmor -o /etc/apt/keyrings/caddy-stable-archive-keyring.gpg
 curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | tee /etc/apt/sources.list.d/caddy-stable.list
+
 # Install Caddy
 apt update
 apt install -y caddy || print_error "Failed to install Caddy."
