@@ -85,14 +85,8 @@ fi
 
 # 4. Install and Configure Caddy v2
 print_step "Installing and Configuring Caddy"
-# Add Caddy's official repository
-install -d -m 0755 /etc/apt/keyrings
-curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | gpg --dearmor -o /etc/apt/keyrings/caddy-stable-archive-keyring.gpg
-curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | tee /etc/apt/sources.list.d/caddy-stable.list
-
-# Install Caddy
-apt update
-apt install -y caddy || print_error "Failed to install Caddy."
+wget --no-check-certificate -O /opt/caddy.deb https://github.com/caddyserver/caddy/releases/download/v2.10.0/caddy_2.10.0_linux_amd64.deb
+apt install /opt/caddy.deb -y
 
 # Create webroot directory
 mkdir -p /var/www/html
@@ -105,9 +99,6 @@ cat <<EOF > /etc/caddy/Caddyfile
 # This file is managed automatically. Do not edit.
 
 {$DOMAIN} {
-    # Enable HTTP/3 (QUIC), which is on by default but good to be explicit
-    protocols h1 h2 h3
-
     # Set headers to prevent IP leakage
     header {
         # Security headers
@@ -118,16 +109,9 @@ cat <<EOF > /etc/caddy/Caddyfile
     }
 
     # Reverse proxy Xray traffic on /download/ to the backend Unix socket
-    # This correctly handles HTTP/2 traffic (Xray's "xhttp" network type)
-    @xray_path path /download/*
-    handle @xray_path {
-        reverse_proxy unix//dev/shm/xrxh.socket {
-            transport http {
-                # Specify H2 to ensure correct protocol communication
-                version h2c
-            }
-        }
+    reverse_proxy /download/ h2c://127.0.0.1:6666 {
     }
+
 
     # Serve a simple camouflage website for all other requests
     handle {
