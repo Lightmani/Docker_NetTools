@@ -186,7 +186,8 @@ cat <<EOF > /etc/v2ray/config.json
         }
         },
     {
-      "listen": "/dev/shm/xrxh.socket,0666",
+            "listen": "127.0.0.1",
+            "port": 6666,
       "protocol": "vless",
       "settings": {
         "clients": [
