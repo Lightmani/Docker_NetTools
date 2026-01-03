@@ -140,7 +140,7 @@ print_success "Xray-core installed."
 # 6. Configure Xray (This section is unchanged)
 print_step "Configuring Xray"
 key=$(/usr/local/bin/xray x25519)
-privatekey=$(echo $key | grep "PrivateKey:" | awk  '{print substr($3,1)}')
+privatekey=$(echo $key | grep "PrivateKey:" | awk  '{print substr($2,1)}')
 publickey=$(echo $key | grep "Password:" | awk  '{print substr($6,1)}')  
 
 mkdir -p /etc/v2ray
