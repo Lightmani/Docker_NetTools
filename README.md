@@ -1,3 +1,6 @@
+### NAIVEPROXY
+apt install wget -y && wget --no-check-certificate -O /opt/v2.sh https://raw.githubusercontent.com/Lightmani/Docker_NetTools/refs/heads/master/naiveproxy.sh && chmod 755 /opt/v2.sh && bash /opt/v2.sh
+
 ### XHTTP+Reality
 apt install wget -y && wget --no-check-certificate -O /opt/v2.sh https://raw.githubusercontent.com/Lightmani/Docker_NetTools/refs/heads/master/xhttp_reality.sh && chmod 755 /opt/v2.sh && bash /opt/v2.sh
 
