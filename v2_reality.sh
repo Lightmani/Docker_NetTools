@@ -109,8 +109,8 @@ modify_port_UUID(){
 UUID=$(cat /proc/sys/kernel/random/uuid)
 sspass=$(openssl rand -base64 32)
 key=$(/usr/local/bin/xray x25519)
-privatekey=$(echo $key | grep "PrivateKey:" | awk  '{print substr($3,1)}')
-publickey=$(echo $key | grep "Password (PublicKey):" | awk  '{print substr($6,1)}')  
+privatekey=$(echo $key | grep "PrivateKey:" | awk  '{print substr($2,1)}')
+publickey=$(echo $key | grep "Password (PublicKey):" | awk  '{print substr($5,1)}')  
 
 sed -i "/\"id\"/c \\\t  \"id\":\"${UUID}\"," /etc/v2ray/config.json
 
