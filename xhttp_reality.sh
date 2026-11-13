@@ -1,208 +1,187 @@
 #!/bin/bash
 
 #===============================================================================================
-#   Xray & Caddy v2 One-Click Deployment Script for Debian 12
-#
-#   Author: Gemini (Refactored from original Nginx script)
-#   Version: 2.0 (Caddy Edition)
-#   Description: This script automates the setup of Xray with VLESS+H2+TLS,
-#                using Caddy v2 as a reverse proxy with automatic HTTPS.
-#
+#   Xray & Caddy v2 One-Click Deployment Script for Debian 12/13
+#   Version: 3.0 (Fixed x25519 parser, IPv6 dual-stack, h2c socket, and 500Mbps+ sysctl)
 #===============================================================================================
 
-#--- [Color Codes] ---
 GREEN="\033[0;32m"
 YELLOW="\033[0;33m"
 RED="\033[0;31m"
-NC="\033[0m" # No Color
+NC="\033[0m"
 
-#--- [Script Configuration] ---
-# Auto-generate a UUID and password
 GENERATED_UUID=$(cat /proc/sys/kernel/random/uuid)
-sspass=$(openssl rand -base64 32)
+SS_PASS=$(openssl rand -base64 32)
+SHORT_ID=$(openssl rand -hex 8)
 
-#--- [Helper Functions] ---
 print_step() {
     echo -e "${YELLOW}=======================================================${NC}"
     echo -e "${YELLOW} STEP: $1${NC}"
     echo -e "${YELLOW}=======================================================${NC}"
 }
 
-print_success() {
-    echo -e "${GREEN}✔ $1${NC}"
-}
+print_success() { echo -e "${GREEN}✔ $1${NC}"; }
+print_error() { echo -e "${RED}✘ $1${NC}"; exit 1; }
 
-print_error() {
-    echo -e "${RED}✘ $1${NC}"
-    exit 1
-}
-
-#--- [Pre-flight Checks] ---
-# Check if running as root
+#--- [1. Pre-flight Checks] ---
 if [ "$(id -u)" -ne 0 ]; then
     print_error "This script must be run as root. Please use 'sudo -i' first."
 fi
 
-# Check for Debian 12
-if ! grep -q "VERSION_ID=\"12\"" /etc/os-release; then
-    print_error "This script is designed for Debian 12 (Bookworm)."
+if ! grep -qE 'VERSION_ID="(12|13)"' /etc/os-release; then
+    print_error "This script is designed for Debian 12 (Bookworm) or Debian 13 (Trixie)."
 fi
 
-#--- [Main Script] ---
-
-# 1. Get User Input
+#--- [2. User Input] ---
 print_step "Getting User Input"
 read -p "Please enter your domain name (e.g., xray.example.com): " DOMAIN
 if [ -z "$DOMAIN" ]; then
     print_error "Domain name cannot be empty."
 fi
-# Ensure DNS is pointed to this server's IP before proceeding
-echo -e "${YELLOW}Please ensure the domain '$DOMAIN' is pointing to this server's public IP.${NC}"
+echo -e "${YELLOW}Ensure '$DOMAIN' A/AAAA records point to this server's public IP.${NC}"
 read -p "Press [Enter] to continue..."
 print_success "Domain set to: $DOMAIN"
 
-# 2. System Update and Preparation
+#--- [3. System Update & Dependencies] ---
 print_step "Updating System and Installing Dependencies"
 apt update && apt upgrade -y
-# Caddy dependencies are included here
-apt install -y curl wget socat git debian-keyring debian-archive-keyring lsb-release ca-certificates gnupg cron sudo || print_error "Failed to install dependencies."
-apt remove --purge nginx nginx-full nginx-common -y
+apt install -y curl wget socat git ca-certificates gnupg cron sudo openssl || print_error "Failed to install dependencies."
+apt remove --purge nginx nginx-full nginx-common -y 2>/dev/null
 print_success "System updated and dependencies installed."
 
-# 3. Configure Firewall (if ufw is active)
+#--- [4. Firewall Configuration] ---
 if command -v ufw &> /dev/null && ufw status | grep -q "Status: active"; then
     print_step "Configuring Firewall"
+    ufw allow 22/tcp
     ufw allow 80/tcp
     ufw allow 443/tcp
-    ufw allow 443/udp # Required for HTTP/3 (QUIC)
-    ufw allow 22/tcp
-    # The SS port from xray config
+    ufw allow 443/udp
+    ufw allow 8443/tcp
     ufw allow 52666/tcp
-    ufw allow 52666/udp # For SS UoT
+    ufw allow 52666/udp
     ufw reload
-    print_success "Firewall ports 80, 443 (TCP/UDP), 22, 52666 (TCP/UDP) opened."
+    print_success "Firewall ports 22, 80, 443(TCP/UDP), 8443(TCP), 52666(TCP/UDP) opened."
 fi
 
-# 4. Install and Configure Caddy v2
-print_step "Installing and Configuring Caddy"
-wget --no-check-certificate -O /opt/caddy.deb https://github.com/caddyserver/caddy/releases/download/v2.10.0/caddy_2.10.0_linux_amd64.deb
-apt install /opt/caddy.deb -y
+#--- [5. Install & Configure Caddy v2] ---
+print_step "Installing and Configuring Caddy v2"
+ARCH=$(dpkg --print-architecture)
+CADDY_VER=$(curl -fsSL https://api.github.com/repos/caddyserver/caddy/releases/latest | grep -Po '"tag_name": "\K[^"]+' || echo "v2.10.0")
+CADDY_NUM=${CADDY_VER#v}
+wget -O /opt/caddy.deb "https://github.com/caddyserver/caddy/releases/download/${CADDY_VER}/caddy_${CADDY_NUM}_linux_${ARCH}.deb" || print_error "Failed to download Caddy."
+apt install -y /opt/caddy.deb || print_error "Failed to install Caddy."
+rm -f /opt/caddy.deb
 
-# Create webroot directory
 mkdir -p /var/www/html
-# Create a simple index page for camouflage
-echo "Welcome to my website!" > /var/www/html/index.html
+if [ ! -f /var/www/html/index.html ]; then
+    echo "Welcome to my website!" > /var/www/html/index.html
+fi
 
-# Create Caddyfile
 cat <<EOF > /etc/caddy/Caddyfile
-# Caddyfile for Xray
-# This file is managed automatically. Do not edit.
-
 ${DOMAIN} {
-    # Set headers to prevent IP leakage
     header {
-        # Security headers
-        Strict-Transport-Security "max-age=31536000;"
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
         X-Content-Type-Options "nosniff"
         X-Frame-Options "DENY"
         Referrer-Policy "strict-origin-when-cross-origin"
+        -Server
     }
 
-    # Reverse proxy Xray traffic on /download/ to the backend Unix socket
+    # Reverse proxy XHTTP traffic on /download/* via HTTP/2 cleartext (h2c)
     handle /download/* {
-        reverse_proxy unix//dev/shm/Xray-VLESS-gRPC.socket {
+        reverse_proxy unix//dev/shm/Xray-VLESS-XHTTP.socket {
             transport http {
-                # 对应 grpc_read_timeout 和 grpc_send_timeout
+                versions h2c 1.1
                 read_timeout 315s
                 write_timeout 5m
             }
-            # Caddy 自动设置 X-Forwarded-For 等头部。
-            # 'Host' 头部默认也会传递，这里显式设置以完全对应 grpc_set_header。
             header_up Host {http.request.host}
         }
     }
 
-
-    # Serve a simple camouflage website for all other requests
+    # Serve camouflage website for normal visits & REALITY fallbacks
     handle {
         root * /var/www/html
         file_server
     }
 }
 EOF
-print_success "Caddy installed and configured successfully."
+print_success "Caddy ${CADDY_VER} (${ARCH}) installed and configured."
 
-# 5. Install Xray
+#--- [6. Install & Configure Xray-core] ---
 print_step "Installing Xray-core"
-bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" || print_error "Xray installation failed."
+bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install || print_error "Xray installation failed."
 print_success "Xray-core installed."
 
-# 6. Configure Xray (This section is unchanged)
 print_step "Configuring Xray"
-key=$(/usr/local/bin/xray x25519)
-privatekey=$(echo $key | grep "PrivateKey:" | awk  '{print substr($2,1)}')
-publickey=$(echo $key | grep "Password:" | awk  '{print substr($6,1)}')  
+KEY_OUT=$(/usr/local/bin/xray x25519)
+PRIVATE_KEY=$(echo "$KEY_OUT" | awk -F': ' '/Private/ {print $2}' | tr -d ' \r')
+PUBLIC_KEY=$(echo "$KEY_OUT" | awk -F': ' '/Public|Password/ {print $2}' | tr -d ' \r')
+
+if [ -z "$PRIVATE_KEY" ] || [ -z "$PUBLIC_KEY" ]; then
+    print_error "Failed to parse x25519 keys from Xray output:\n$KEY_OUT"
+fi
 
 mkdir -p /etc/v2ray
-# Create Xray config file from template
 cat <<EOF > /etc/v2ray/config.json
 {
   "log": {
-    "loglevel": "none"
+    "loglevel": "warning"
   },
-    "dns": {
+  "dns": {
     "servers": [
-      "tcp://8.8.8.8:53"
+      "tcp+local://8.8.8.8:53"
     ]
   },
   "inbounds": [
-        {
-            "listen": "0.0.0.0",
-            "port": 8443,
-            "protocol": "vless",
-            "settings": {
-                "clients": [
-                    {
-                        "id": "${GENERATED_UUID}",
-                        "flow": "xtls-rprx-vision"
-                    }
-                ],
-                "decryption": "none"
-            },
-            "streamSettings": {
-                "network": "tcp",
-                "security": "reality",
-                "realitySettings": {
-                    "show": false,
-                    "dest": "127.0.0.1:443",
-                    "xver": 0,
-                    "serverNames": [
-                        "${DOMAIN}"
-                    ],
-                    "privateKey": "${privatekey}",
-                    "minClientVer": "",
-                    "maxClientVer": "",
-                    "maxTimeDiff": 0,
-                    "shortIds": [
-                        ""
-                    ]
-                }
-            },
-        "sniffing": {
-          "enabled": true,
-          "destOverride": [
-            "fakedns+others"
-          ]
-        }
-        },
     {
-"listen": "/dev/shm/Xray-VLESS-gRPC.socket,0666",
+      "tag": "vless-reality",
+      "listen": "0.0.0.0",
+      "port": 8443,
       "protocol": "vless",
       "settings": {
         "clients": [
           {
             "id": "${GENERATED_UUID}",
-            "flow": ""
+            "flow": "xtls-rprx-vision"
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "raw",
+        "security": "reality",
+        "realitySettings": {
+          "show": false,
+          "target": "127.0.0.1:443",
+          "xver": 0,
+          "serverNames": [
+            "${DOMAIN}"
+          ],
+          "privateKey": "${PRIVATE_KEY}",
+          "shortIds": [
+            "${SHORT_ID}"
+          ]
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ],
+        "routeOnly": true
+      }
+    },
+    {
+      "tag": "vless-xhttp-uds",
+      "listen": "/dev/shm/Xray-VLESS-XHTTP.socket,0666",
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "${GENERATED_UUID}"
           }
         ],
         "decryption": "none"
@@ -217,43 +196,46 @@ cat <<EOF > /etc/v2ray/config.json
       "sniffing": {
         "enabled": true,
         "destOverride": [
-          "fakedns+others"
-        ]
+          "http",
+          "tls",
+          "quic"
+        ],
+        "routeOnly": true
       }
     },
     {
-      "tag": "ss",
-      "protocol": "shadowsocks",
-      "address": "0.0.0.0",
+      "tag": "ss-ipv6-direct",
+      "listen": "::",
       "port": 52666,
+      "protocol": "shadowsocks",
       "settings": {
         "method": "2022-blake3-aes-256-gcm",
-        "password": "${sspass}",
-        "network": "tcp,udp",
-        "uot": true,
-        "UoTVersion": 2,
-        "level": 0
+        "password": "${SS_PASS}",
+        "network": "tcp,udp"
       },
       "sniffing": {
         "enabled": true,
         "destOverride": [
-          "fakedns+others"
-        ]
+          "http",
+          "tls",
+          "quic"
+        ],
+        "routeOnly": true
       }
     }
   ],
   "outbounds": [
     {
       "tag": "direct",
-      "sendThrough": "0.0.0.0",
       "protocol": "freedom",
-      "settings": {"domainStrategy": "UseIPv4"}
+      "settings": {
+        "domainStrategy": "AsIs"
+      }
     },
     {
       "tag": "stream",
-      "sendThrough": "0.0.0.0",
       "protocol": "freedom",
-      "settings":{
+      "settings": {
         "domainStrategy": "UseIPv4"
       }
     },
@@ -277,8 +259,7 @@ cat <<EOF > /etc/v2ray/config.json
       {
         "type": "field",
         "ip": [
-          "geoip:private",
-          "::/0"
+          "geoip:private"
         ],
         "outboundTag": "blocked"
       }
@@ -286,96 +267,89 @@ cat <<EOF > /etc/v2ray/config.json
   }
 }
 EOF
-print_success "Xray configuration created."
+
 rm -f /usr/local/etc/xray/config.json
 ln -s /etc/v2ray/config.json /usr/local/etc/xray/config.json
 
-# 7. System Optimization (This section is unchanged and still valuable)
+# Ensure stale Unix socket is cleaned up before Xray starts
+mkdir -p /etc/systemd/system/xray.service.d
+cat <<EOF > /etc/systemd/system/xray.service.d/override.conf
+[Service]
+ExecStartPre=-/bin/rm -f /dev/shm/Xray-VLESS-XHTTP.socket
+LimitNOFILE=1000000
+EOF
+print_success "Xray configuration created and verified."
+
+#--- [7. System & Network Tuning (500Mbps+ BBR)] ---
 print_step "Optimizing System Parameters (sysctl, limits)"
-# The entire sysctl and limits configuration block from the original script is preserved here.
-# It is good practice for performance tuning.
-sed -i '/net.core.default_qdisc/d' /etc/sysctl.conf
-sed -i '/net.ipv4.tcp_congestion_control/d' /etc/sysctl.conf
-# ... (all other sed -i lines from original script) ...
-sed -i '/net.ipv4.udp_wmem_min/d' /etc/sysctl.conf
-
-cat >> /etc/sysctl.conf << EOF
-net.ipv4.tcp_no_metrics_save=1
-net.ipv4.tcp_ecn=0
-net.ipv4.tcp_frto=0
-net.ipv4.tcp_mtu_probing=0
-net.ipv4.tcp_rfc1337=1
-net.ipv4.tcp_sack=1
-net.ipv4.tcp_fack=1
-net.ipv4.tcp_window_scaling=1
-net.ipv4.tcp_adv_win_scale=1
-net.ipv4.tcp_moderate_rcvbuf=1
-net.core.default_qdisc=fq
-net.ipv4.tcp_congestion_control=bbr
-fs.file-max=1000000
+cat <<EOF > /etc/sysctl.d/99-xray-tuning.conf
+fs.file-max = 1000000
+net.core.default_qdisc = fq
+net.ipv4.tcp_congestion_control = bbr
+net.core.rmem_max = 33554432
+net.core.wmem_max = 33554432
+net.ipv4.tcp_rmem = 4096 87380 33554432
+net.ipv4.tcp_wmem = 4096 65536 33554432
+net.ipv4.udp_rmem_min = 8192
+net.ipv4.udp_wmem_min = 8192
+net.ipv4.tcp_no_metrics_save = 1
+net.ipv4.tcp_ecn = 0
+net.ipv4.tcp_frto = 0
+net.ipv4.tcp_mtu_probing = 1
+net.ipv4.tcp_rfc1337 = 1
+net.ipv4.tcp_sack = 1
+net.ipv4.tcp_window_scaling = 1
+net.ipv4.tcp_adv_win_scale = 1
+net.ipv4.tcp_moderate_rcvbuf = 1
 EOF
-sysctl -p && sysctl --system
+sysctl --system >/dev/null
 
-ulimit -SHn 1000000 && ulimit -c unlimited
-cat > /etc/security/limits.conf << EOF
-root      soft    nofile     1000000
-root      hard    nofile     1000000
-root      soft    nproc      1000000
-root      hard    nproc      1000000
-root      soft    core       1000000
-root      hard    core       1000000
-root      hard    memlock    unlimited
-root      soft    memlock    unlimited
-
-* soft    nofile     1000000
-* hard    nofile     1000000
-* soft    nproc      1000000
-* hard    nproc      1000000
-* soft    core       1000000
-* hard    core       1000000
-* hard    memlock    unlimited
-* soft    memlock    unlimited
+cat <<EOF > /etc/security/limits.d/99-xray.conf
+* soft nofile 1000000
+* hard nofile 1000000
+* soft nproc 1000000
+* hard nproc 1000000
+root soft nofile 1000000
+root hard nofile 1000000
 EOF
-if ! grep -q "ulimit -SHn 1000000" /etc/profile; then
-  echo "ulimit -SHn 1000000" >> /etc/profile
-fi
-if ! grep -q "session required pam_limits.so" /etc/pam.d/common-session; then
-  echo "session required pam_limits.so" >> /etc/pam.d/common-session
-fi
 
-sed -i '/DefaultLimitCORE/d' /etc/systemd/system.conf
 sed -i '/DefaultLimitNOFILE/d' /etc/systemd/system.conf
-sed -i '/DefaultLimitNPROC/d' /etc/systemd/system.conf
-cat >>'/etc/systemd/system.conf' <<EOF
-[Manager]
-DefaultLimitCORE=infinity
-DefaultLimitNOFILE=65535
-DefaultLimitNPROC=65535
-EOF
+echo "DefaultLimitNOFILE=1000000" >> /etc/systemd/system.conf
 systemctl daemon-reload
 print_success "System parameters optimized."
 
-# 8. Start Services and Set Auto-start
-print_step "Starting Services and Enabling Auto-start"
-systemctl enable caddy
-systemctl enable xray
+#--- [8. Start Services] ---
+print_step "Starting Services"
+systemctl enable caddy xray
 systemctl restart caddy
 systemctl restart xray
-print_success "Caddy and Xray started and enabled on boot."
 
-# 9. Display Configuration
-print_step "Deployment Complete! Here is your configuration:"
+/usr/local/bin/xray run -test -c /usr/local/etc/xray/config.json || print_error "Xray config test failed!"
+print_success "Caddy and Xray started successfully."
+
+#--- [9. Display Configuration] ---
+print_step "Deployment Complete! Connection Details:"
 echo -e "-------------------------------------------------------"
-echo -e "  ${YELLOW}Address (地址):${NC}    ${DOMAIN}"
-echo -e "  ${YELLOW}Port (端口):${NC}        443"
-echo -e "  ${YELLOW}UUID:${NC}               ${GENERATED_UUID}"
-echo -e "  ${YELLOW}Publickey (公钥):${NC}    ${publickey}"
-echo -e "  ${YELLOW}Transport (传输):${NC}   HTTP/2 (xhttp)"
-echo -e "  ${YELLOW}Path (路径):${NC}         /download/"
-echo -e "  ${YELLOW}TLS:${NC}                tls (managed by Caddy)"
+echo -e "  ${GREEN}[1] VLESS + RAW + Vision + REALITY (Primary)${NC}"
+echo -e "  Address (地址):      ${DOMAIN}"
+echo -e "  Port (端口):         8443"
+echo -e "  UUID:                ${GENERATED_UUID}"
+echo -e "  Flow (流控):         xtls-rprx-vision"
+echo -e "  SNI:                 ${DOMAIN}"
+echo -e "  PublicKey (公钥):    ${PUBLIC_KEY}"
+echo -e "  ShortId:             ${SHORT_ID}"
 echo -e "-------------------------------------------------------"
-echo -e "  ${YELLOW}Shadowsocks Port:${NC}   52666"
-echo -e "  ${YELLOW}Shadowsocks Method:${NC} 2022-blake3-aes-256-gcm"
-echo -e "  ${YELLOW}Shadowsocks Pass:${NC}   ${sspass}"
+echo -e "  ${GREEN}[2] VLESS + XHTTP + TLS (CDN / Backup)${NC}"
+echo -e "  Address (地址):      ${DOMAIN}"
+echo -e "  Port (端口):         443"
+echo -e "  UUID:                ${GENERATED_UUID}"
+echo -e "  Transport (传输):    xhttp (auto)"
+echo -e "  Path (路径):         /download/"
+echo -e "  TLS:                 tls (SNI: ${DOMAIN})"
 echo -e "-------------------------------------------------------"
-echo -e "${GREEN}Enjoy your secure and private connection!${NC}"
+echo -e "  ${GREEN}[3] Shadowsocks-2022 (IPv6 / Dual-Stack Direct)${NC}"
+echo -e "  Listen (监听):       :: (IPv6 & IPv4)"
+echo -e "  Port (端口):         52666"
+echo -e "  Method (加密):       2022-blake3-aes-256-gcm"
+echo -e "  Password (密码):     ${SS_PASS}"
+echo -e "-------------------------------------------------------"
